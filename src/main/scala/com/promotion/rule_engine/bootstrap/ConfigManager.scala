@@ -5,19 +5,19 @@ import java.io.FileInputStream
 
 object ConfigManager {
 
-	val properties = new Properties()
+  val properties = new Properties()
 
-	def init = {
-		try {
-			properties.load(new FileInputStream("src/main/resources/config.properties"))
-		} catch {
-			case e: Exception =>
-				e.printStackTrace()
-				sys.exit(1)
-		}
-	}
+  def init = {
+    try {
+      properties.load(new FileInputStream("src/main/resources/config.properties"))
+    } catch {
+      case e: Exception =>
+        e.printStackTrace()
+        sys.exit(1)
+    }
+  }
 
-	def getValue(key: String) = {
-		properties.getProperty(key)
-	}
+  def getValue(key: String) = {
+    properties.getProperty(key)
+  }
 } 
