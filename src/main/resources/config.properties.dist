@@ -1,0 +1,6 @@
+mongo.uri=mongo-uri
+mongo.dbName=mongo-dbname
+mongo.isDebugMode=false
+
+redis.hostName=redis-hostname
+redis.portName=redis-port
