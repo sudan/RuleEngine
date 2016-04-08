@@ -20,7 +20,7 @@ object Constants {
   val VERTICALS = "verticals"
   val PRODUCT_IDS = "product_ids"
 
-  val RULE_ID = "id"
+  val RULE_ID = "_id"
   val RULE_NAME = "name"
   val RULE_DESCRIPTION = "description"
   val RULE_CREATED_ON = "created_on"
