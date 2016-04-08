@@ -4,10 +4,10 @@ import scala.util.Random
 
 object IdGenerator {
 
-    def generate(prefix: String, totLen: Int): String = {
-        val timestampStr = (System.currentTimeMillis / 60000).toString
-        val randomPartLen = totLen - prefix.length - timestampStr.length
-        val randomStr = Random.alphanumeric.take(randomPartLen).mkString.toUpperCase
-        prefix + timestampStr + randomStr
-    }
+  def generate(prefix: String, totLen: Int): String = {
+    val timestampStr = (System.currentTimeMillis / 60000).toString
+    val randomPartLen = totLen - prefix.length - timestampStr.length
+    val randomStr = Random.alphanumeric.take(randomPartLen).mkString.toUpperCase
+    prefix + timestampStr + randomStr
+  }
 }
