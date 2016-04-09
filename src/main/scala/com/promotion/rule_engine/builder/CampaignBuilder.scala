@@ -2,8 +2,8 @@ package com.promotion.rule_engine.builder
 
 import com.mongodb.DBObject
 import com.mongodb.casbah.commons.MongoDBObject
-import com.promotion.rule_engine.model.Campaign
 import com.promotion.rule_engine.Constants
+import com.promotion.rule_engine.model.Campaign
 
 /**
  * Created by sudan on 09/04/16.
