@@ -13,4 +13,6 @@ trait RuleDao {
     * @return
     */
   def insert(rule: Rule): String
+
+  
 }
