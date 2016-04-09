@@ -1,8 +1,8 @@
 package com.promotion.rule_engine
 
 /**
-  * Created by sudan on 8/4/16.
-  */
+ * Created by sudan on 8/4/16.
+ */
 object Constants {
 
   val RULE_ID_LENGTH = 16

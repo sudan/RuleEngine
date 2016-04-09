@@ -1,8 +1,6 @@
 package com.promotion.rule_engine
 
-import com.promotion.rule_engine.bootstrap.ConfigManager
-import com.promotion.rule_engine.bootstrap.MongoClient
-import com.promotion.rule_engine.bootstrap.RedisClient
+import com.promotion.rule_engine.bootstrap.{ConfigManager, MongoClient, RedisClient}
 
 object RuleEngine extends App {
 
@@ -15,5 +13,4 @@ object RuleEngine extends App {
   val redisHostName = ConfigManager.getValue("redis.hostName")
   val redisPort = (ConfigManager.getValue("redis.portNumber")).toInt
   val redisConn = RedisClient.init(redisHostName, redisPort)
-
 }

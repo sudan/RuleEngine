@@ -1,8 +1,8 @@
 package com.promotion.rule_engine.model
 
 case class CategoryList(
-                         mainCategories: List[String],
-                         subCategories: List[String],
-                         verticals: List[String],
-                         productIds: List[String]
-                       )
+                         mainCategories: Array[String],
+                         subCategories: Array[String],
+                         verticals: Array[String],
+                         productIds: Array[String]
+                         )

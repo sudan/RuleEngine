@@ -1,7 +1,6 @@
 package com.promotion.rule_engine.bootstrap
 
 import com.mongodb.casbah.{MongoClient => MongoDBClient, MongoClientURI}
-import com.mongodb.casbah.Imports._
 
 object MongoClient {
 

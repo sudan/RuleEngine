@@ -1,20 +1,20 @@
 package com.promotion.rule_engine.model
 
-import java.util.Date
+import scala.collection.mutable.Map
 
 case class Rule(
                  id: String,
                  name: String,
                  description: String,
-                 createdOn: Date,
-                 modifiedAt: Date,
+                 createdOn: Long,
+                 modifiedAt: Long,
                  version: String,
                  owner: String,
                  discount: Double,
                  boost: Integer,
-                 properties: Map[String, List[String]],
+                 properties: Map[String, Array[String]],
                  regionList: RegionList,
                  categoryList: CategoryList,
                  isActive: Boolean
-               )
+                 )
 

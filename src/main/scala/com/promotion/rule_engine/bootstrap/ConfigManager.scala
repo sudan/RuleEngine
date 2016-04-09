@@ -1,7 +1,7 @@
 package com.promotion.rule_engine.bootstrap
 
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 object ConfigManager {
 

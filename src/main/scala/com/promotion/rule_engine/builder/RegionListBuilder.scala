@@ -1,12 +1,12 @@
 package com.promotion.rule_engine.builder
 
 import com.mongodb.casbah.Imports._
-import com.promotion.rule_engine.model.RegionList
 import com.promotion.rule_engine.Constants
+import com.promotion.rule_engine.model.RegionList
 
 /**
-  * Created by sudan on 8/4/16.
-  */
+ * Created by sudan on 8/4/16.
+ */
 object RegionListBuilder {
 
   def build(regionList: RegionList): DBObject = {
