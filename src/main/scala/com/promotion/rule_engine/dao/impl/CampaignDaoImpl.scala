@@ -22,10 +22,10 @@ class CampaignDaoImpl(db: MongoDB) extends CampaignDao {
     id
   }
 
-  def get(campaignId: String):  Either[Throwable, Campaign] = {
+  def get(campaignId: String): Either[Throwable, Campaign] = {
     val collection = db(Constants.CAMPAIGN_COLLECTION)
     val document = collection.findOne(MongoDBObject(Constants.CAMPAIGN_ID -> campaignId,
-                                                    Constants.SOFT_DELETED -> false))
+      Constants.SOFT_DELETED -> false))
     document match {
       case Some(_) =>
         Right(CampaignMapper.map(document.get))

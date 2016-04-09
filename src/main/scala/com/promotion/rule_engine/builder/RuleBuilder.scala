@@ -9,8 +9,10 @@ import com.promotion.rule_engine.model.Rule
  */
 object RuleBuilder {
 
-  def build(rule: Rule, regionList: DBObject, categoryList: DBObject, ruleId: String): DBObject = {
+  def build(rule: Rule, ruleId: String): DBObject = {
     val ruleBuilder = MongoDBObject.newBuilder
+    val categoryList = CategoryListBuilder.build(rule.categoryList)
+    val regionList = RegionListBuilder.build(rule.regionList)
     ruleBuilder += Constants.RULE_ID -> ruleId
     ruleBuilder += Constants.RULE_NAME -> rule.name
     ruleBuilder += Constants.RULE_DESCRIPTION -> rule.description
