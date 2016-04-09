@@ -22,7 +22,7 @@ trait CampaignDao {
   def get(campaignId: String): Either[Throwable, Campaign]
 
   /**
-   *
+   * Update the campaign and return the campaign object updated
    * @param campaign
    * @param campaignId
    * @return

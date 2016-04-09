@@ -19,6 +19,9 @@ object Constants {
   val CAMPAIGN_ID_LENGTH = 16
   val CAMPAIGN_ID_PREFIX = "CAM"
 
+  val SALE_ID_LENGTH = 16
+  val SALE_ID_PREFIX = "SAL"
+
   val COUNTRIES = "countries"
   val STATES = "states"
   val CITIES = "cities"
@@ -48,4 +51,7 @@ object Constants {
   val CAMPAIGN_RULE_IDS = "rule_ids"
   val CAMPAIGN_START_DATE = "start_date"
   val CAMPAIGN_END_DATE = "end_date"
+
+  val SALE_ID = "_id"
+  val SALE_CAMPAIGN_IDS = "campaign_ids"
 }
