@@ -7,4 +7,4 @@ case class Campaign(
                      rules: List[Rule],
                      startDate: Date,
                      endDate: Date
-                   )
+                     )

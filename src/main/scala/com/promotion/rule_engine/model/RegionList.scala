@@ -1,9 +1,9 @@
 package com.promotion.rule_engine.model
 
 case class RegionList(
-                       countries: List[String],
-                       states: List[String],
-                       cities: List[String],
-                       areas: List[String],
-                       pincodes: List[String]
-                     )
+                       countries: Array[String],
+                       states: Array[String],
+                       cities: Array[String],
+                       areas: Array[String],
+                       pincodes: Array[String]
+                       )
