@@ -5,13 +5,19 @@ package com.promotion.rule_engine
  */
 object Constants {
 
+  val RULE_COLLECTION = "rules"
+  val CAMPAIGN_COLLECTION = "campaigns"
+  val SALE_COLLECTION = "sales"
+
   val SOFT_DELETED = "soft_deleted"
 
   val SET_OP = "$set"
 
   val RULE_ID_LENGTH = 16
   val RULE_ID_PREFIX = "RUL"
-  val RULE_COLLECTION = "rules"
+
+  val CAMPAIGN_ID_LENGTH = 16
+  val CAMPAIGN_ID_PREFIX = "CAM"
 
   val COUNTRIES = "countries"
   val STATES = "states"
@@ -37,4 +43,9 @@ object Constants {
   val DISCOUNT = "discount"
   val REGION_LIST = "region_list"
   val CATEGORY_LIST = "category_list"
+
+  val CAMPAIGN_ID = "_id"
+  val CAMPAIGN_RULE_IDS = "rule_ids"
+  val CAMPAIGN_START_DATE = "start_date"
+  val CAMPAIGN_END_DATE = "end_date"
 }
