@@ -28,7 +28,8 @@ class RuleDaoImpl(db: MongoDB) extends RuleDao {
   def get(ruleId: String): Either[Throwable, Rule] = {
 
     val collection = db(Constants.RULE_COLLECTION)
-    val document = collection.findOneByID(ruleId)
+    val document = collection.findOne(MongoDBObject(Constants.RULE_ID -> ruleId,
+                                                    Constants.SOFT_DELETED -> false))
     document match {
       case Some(_) =>
         Right(RuleMapper.map(document.get))
@@ -45,4 +46,13 @@ class RuleDaoImpl(db: MongoDB) extends RuleDao {
     collection.update(query, ruleObj)
     Right(rule)
   }
+
+  def delete(ruleId: String): Unit = {
+
+    var query = MongoDBObject(Constants.RULE_ID -> ruleId)
+    val collection = db(Constants.RULE_COLLECTION)
+    collection.update(query, MongoDBObject(Constants.SET_OP ->
+      MongoDBObject(Constants.SOFT_DELETED -> true)))
+  }
+
 }

@@ -23,6 +23,7 @@ object RuleBuilder {
     ruleBuilder += Constants.RULE_IS_ACTIVE -> rule.isActive
     ruleBuilder += Constants.CATEGORY_LIST -> categoryList
     ruleBuilder += Constants.REGION_LIST -> regionList
+    ruleBuilder += Constants.SOFT_DELETED -> false
     ruleBuilder.result
   }
 

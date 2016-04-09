@@ -27,4 +27,10 @@ trait RuleDao {
    * @return
    */
   def update(rule: Rule): Either[Throwable, Rule]
+
+  /**
+   * Soft delete the rule given ruleId
+   * @param ruleId
+   */
+  def delete(ruleId: String): Unit
 }

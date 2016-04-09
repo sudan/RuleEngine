@@ -5,6 +5,10 @@ package com.promotion.rule_engine
  */
 object Constants {
 
+  val SOFT_DELETED = "soft_deleted"
+
+  val SET_OP = "$set"
+
   val RULE_ID_LENGTH = 16
   val RULE_ID_PREFIX = "RUL"
   val RULE_COLLECTION = "rules"
