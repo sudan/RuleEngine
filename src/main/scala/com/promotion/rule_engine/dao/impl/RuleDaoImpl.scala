@@ -1,6 +1,7 @@
 package com.promotion.rule_engine.dao.impl
 
 import com.mongodb.casbah.MongoDB
+import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.builder.{CategoryListBuilder, RegionListBuilder, RuleBuilder}
 import com.promotion.rule_engine.dao.api.RuleDao
@@ -24,19 +25,24 @@ class RuleDaoImpl(db: MongoDB) extends RuleDao {
     return id
   }
 
-  /**
-   * Get the rule object corresponding to ruleId
-   * @param ruleId
-   * @return
-   */
-  def get(ruleId: String): Either[Rule, Throwable] = {
+  def get(ruleId: String): Either[Throwable, Rule] = {
 
     val collection = db(Constants.RULE_COLLECTION)
     val document = collection.findOneByID(ruleId)
     document match {
       case Some(_) =>
-        Left(RuleMapper.map(document.get))
-      case None => Right(throw new Exception("Invalid ruleId " + ruleId))
+        Right(RuleMapper.map(document.get))
+      case None => Left(throw new Exception("Invalid ruleId " + ruleId))
     }
+  }
+
+  def update(rule: Rule): Either[Throwable, Rule] = {
+    val categoryList = CategoryListBuilder.build(rule.categoryList)
+    val regionList = RegionListBuilder.build(rule.regionList)
+    val ruleObj = RuleBuilder.build(rule, regionList, categoryList, rule.id)
+    val collection = db(Constants.RULE_COLLECTION)
+    val query = MongoDBObject(Constants.RULE_ID -> rule.id)
+    collection.update(query, ruleObj)
+    Right(rule)
   }
 }

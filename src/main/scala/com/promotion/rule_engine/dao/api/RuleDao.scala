@@ -19,5 +19,12 @@ trait RuleDao {
    * @param ruleId
    * @return
    */
-  def get(ruleId: String): Either[Rule, Throwable]
+  def get(ruleId: String): Either[Throwable, Rule]
+
+  /**
+   * Update the rule object and return the update rule object
+   * @param rule
+   * @return
+   */
+  def update(rule: Rule): Either[Throwable, Rule]
 }
