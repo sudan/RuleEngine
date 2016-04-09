@@ -22,7 +22,7 @@ class RuleDaoImpl(db: MongoDB) extends RuleDao {
     val ruleObj = RuleBuilder.build(rule, regionList, categoryList, id)
     val collection = db(Constants.RULE_COLLECTION)
     collection.insert(ruleObj)
-    return id
+    id
   }
 
   def get(ruleId: String): Either[Throwable, Rule] = {
