@@ -10,6 +10,7 @@ object Constants {
   val SALE_COLLECTION = "sales"
 
   val SOFT_DELETED = "soft_deleted"
+  val ID = "id"
 
   val SET_OP = "$set"
 
@@ -54,4 +55,8 @@ object Constants {
 
   val SALE_ID = "_id"
   val SALE_CAMPAIGN_IDS = "campaign_ids"
+
+  val DISPLAY_FORMAT = "YYYY-MM-dd"
+  val SENTINEL_ID = "-1"
+  val SENTINEL_TIMESTAMP = -1
 }
