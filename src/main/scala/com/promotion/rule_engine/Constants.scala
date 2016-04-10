@@ -55,5 +55,5 @@ object Constants {
   val SALE_ID = "_id"
   val SALE_CAMPAIGN_IDS = "campaign_ids"
 
-  val DISPLAY_FORMAT = "YYYY-mm-dd"
+  val DISPLAY_FORMAT = "YYYY-MM-dd"
 }
