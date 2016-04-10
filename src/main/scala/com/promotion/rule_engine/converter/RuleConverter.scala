@@ -4,7 +4,7 @@ package com.promotion.rule_engine.converter
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.model.Rule
 import org.joda.time.format.DateTimeFormat
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json._
 
 /**
  * Created by sudan on 10/04/16.
@@ -33,4 +33,29 @@ object RuleConverter {
     }
     Json.toJson(rule)
   }
+
+  def fromJson(json: JsValue): Rule = {
+
+    val idResult = (json \ Constants.ID).validate[String]
+    val id = idResult match {
+      case s: JsSuccess[String] => idResult.asInstanceOf[String]
+      case e: JsError => Constants.SENTINEL_ID
+    }
+    val name = (json \ Constants.RULE_NAME).as[String]
+    val description = (json \ Constants.RULE_DESCRIPTION).as[String]
+    val createdOn = System.currentTimeMillis
+    val modifiedAt = System.currentTimeMillis
+    val owner = (json \ Constants.RULE_OWNER).as[String]
+    val boost = (json \ Constants.RULE_BOOST).as[Int]
+    val version = (json \ Constants.RULE_VERSION).as[String]
+    val discount = (json \ Constants.DISCOUNT).as[Double]
+    val isActive = (json \ Constants.RULE_IS_ACTIVE).as[Boolean]
+    val propertyMap = (json \ Constants.RULE_PROPERTIES).as[Map[String, Array[String]]]
+    val properties = collection.mutable.Map[String, Array[String]]() ++= propertyMap
+    val regionList = RegionListConverter.fromJson(json \ Constants.REGION_LIST)
+    val categoryList = CategoryListConverter.fromJson(json \ Constants.CATEGORY_LIST)
+    Rule(id, name, description, createdOn, modifiedAt, version, owner, discount, boost,
+      properties, regionList, categoryList, isActive)
+  }
+
 }
