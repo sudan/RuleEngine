@@ -2,8 +2,10 @@ package com.promotion.rule_engine.converter
 
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.model.Campaign
+import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json._
+
 
 /**
  * Created by sudan on 10/04/16.
@@ -21,5 +23,19 @@ object CampaignConverter {
       )
     }
     Json.toJson(campaign)
+  }
+
+  def fromJson(json: JsValue): Campaign = {
+
+    val idResult = (json \ Constants.ID).validate[String]
+    val id = idResult match {
+      case s: JsSuccess[String] => idResult.asInstanceOf[String]
+      case e: JsError => Constants.SENTINEL_ID
+    }
+
+    val ruleIds = (json \ Constants.CAMPAIGN_RULE_IDS).as[Array[String]]
+    val startDate = new DateTime((json \ Constants.CAMPAIGN_START_DATE).as[String]).getMillis
+    val endDate = new DateTime((json \ Constants.CAMPAIGN_END_DATE).as[String]).getMillis
+    Campaign(id, ruleIds, startDate, endDate)
   }
 }
