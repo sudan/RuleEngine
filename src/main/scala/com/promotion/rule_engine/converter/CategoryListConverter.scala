@@ -1,8 +1,8 @@
 package com.promotion.rule_engine.converter
 
-import com.promotion.rule_engine.model.CategoryList
-import play.api.libs.json.{Json, Writes, JsValue}
 import com.promotion.rule_engine.Constants
+import com.promotion.rule_engine.model.CategoryList
+import play.api.libs.json.{JsValue, Json, Writes}
 
 /**
  * Created by sudan on 10/04/16.
