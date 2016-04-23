@@ -75,7 +75,7 @@ class SaleDaoImpl extends SaleDao {
             client.sadd(key + Constants.SEPARATOR + value, ruleId)
           }
         }
-        client.sadd(Constants.DISCOUNT + Constants.SEPARATOR + ruleId, rule.discount)
+        client.set(Constants.DISCOUNT + Constants.SEPARATOR + ruleId, rule.discount)
       }
     }
     ruleDao.activate(rules)
