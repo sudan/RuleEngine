@@ -16,6 +16,7 @@ class SaleDaoImpl extends SaleDao {
 
   val mongoClient = MongoClient.getConnection
   val redisClient = RedisCustomClient.getConnection
+  val ruleDao = new RuleDaoImpl
 
   def insert(sale: Sale): String = {
     val id = IdGenerator.generate(Constants.SALE_ID_PREFIX, Constants.SALE_ID_LENGTH)
@@ -53,28 +54,30 @@ class SaleDaoImpl extends SaleDao {
 
   def applyRules(rules: Array[Rule]): Unit = {
 
-      redisClient.pipeline { client =>
+    redisClient.flushall
+    redisClient.pipeline { client =>
 
-        for (rule <- rules) {
-          val ruleId = rule.id
-          rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRIES + Constants.SEPARATOR + v, ruleId))
-          rule.regionList.states.foreach(v => client.sadd(Constants.STATES + Constants.SEPARATOR + v, ruleId))
-          rule.regionList.cities.foreach(v => client.sadd(Constants.CITIES + Constants.SEPARATOR + v, ruleId))
-          rule.regionList.areas.foreach(v => client.sadd(Constants.AREAS + Constants.SEPARATOR + v, ruleId))
-          rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODES + Constants.SEPARATOR + v, ruleId))
+      for (rule <- rules) {
+        val ruleId = rule.id
+        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRIES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.states.foreach(v => client.sadd(Constants.STATES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.cities.foreach(v => client.sadd(Constants.CITIES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.areas.foreach(v => client.sadd(Constants.AREAS + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODES + Constants.SEPARATOR + v, ruleId))
 
-          rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORIES + Constants.SEPARATOR + v, ruleId))
-          rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORIES + Constants.SEPARATOR + v, ruleId))
-          rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICALS + Constants.SEPARATOR + v, ruleId))
-          rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_IDS + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORIES + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORIES + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICALS + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_IDS + Constants.SEPARATOR + v, ruleId))
 
-          for ((key, valueList) <- rule.properties) {
-            for (value <- valueList) {
-              client.sadd(key + Constants.SEPARATOR + value, ruleId)
-            }
+        for ((key, valueList) <- rule.properties) {
+          for (value <- valueList) {
+            client.sadd(key + Constants.SEPARATOR + value, ruleId)
           }
-          client.sadd(Constants.DISCOUNT + Constants.SEPARATOR + ruleId, rule.discount)
         }
+        client.sadd(Constants.DISCOUNT + Constants.SEPARATOR + ruleId, rule.discount)
       }
+    }
+    ruleDao.activate(rules)
   }
 }

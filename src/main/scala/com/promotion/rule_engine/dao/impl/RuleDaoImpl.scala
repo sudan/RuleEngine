@@ -53,4 +53,12 @@ class RuleDaoImpl extends RuleDao {
       MongoDBObject(Constants.SOFT_DELETED -> true)))
   }
 
+  def activate(rules: Array[Rule]): Unit = {
+    for (rule <- rules) {
+      val query = MongoDBObject(Constants.RULE_ID -> rule.id)
+      val collection = mongoClient(Constants.RULE_COLLECTION)
+      collection.update(query, MongoDBObject(Constants.SET_OP ->
+        MongoDBObject(Constants.RULE_IS_ACTIVE -> true)))
+    }
+  }
 }
