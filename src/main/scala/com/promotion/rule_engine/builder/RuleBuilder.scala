@@ -21,6 +21,7 @@ object RuleBuilder {
     ruleBuilder += Constants.RULE_OWNER -> rule.owner
     ruleBuilder += Constants.RULE_VERSION -> rule.version
     ruleBuilder += Constants.RULE_BOOST -> rule.boost
+    ruleBuilder += Constants.DISCOUNT -> rule.discount
     ruleBuilder += Constants.RULE_PROPERTIES -> rule.properties
     ruleBuilder += Constants.RULE_IS_ACTIVE -> rule.isActive
     ruleBuilder += Constants.CATEGORY_LIST -> categoryList

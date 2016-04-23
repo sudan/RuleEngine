@@ -14,20 +14,20 @@ import com.promotion.rule_engine.model.Rule
  */
 class RuleDaoImpl extends RuleDao {
 
-  val db = MongoClient.getConnection
+  val mongoClient = MongoClient.getConnection
 
   def insert(rule: Rule): String = {
 
     val id = IdGenerator.generate(Constants.RULE_ID_PREFIX, Constants.RULE_ID_LENGTH)
     val ruleObj = RuleBuilder.build(rule, id)
-    val collection = db(Constants.RULE_COLLECTION)
+    val collection = mongoClient(Constants.RULE_COLLECTION)
     collection.insert(ruleObj)
     id
   }
 
   def get(ruleId: String): Either[Throwable, Rule] = {
 
-    val collection = db(Constants.RULE_COLLECTION)
+    val collection = mongoClient(Constants.RULE_COLLECTION)
     val document = collection.findOne(MongoDBObject(Constants.RULE_ID -> ruleId,
       Constants.SOFT_DELETED -> false))
     document match {
@@ -39,7 +39,7 @@ class RuleDaoImpl extends RuleDao {
 
   def update(rule: Rule): Either[Throwable, Rule] = {
     val ruleObj = RuleBuilder.build(rule, rule.id)
-    val collection = db(Constants.RULE_COLLECTION)
+    val collection = mongoClient(Constants.RULE_COLLECTION)
     val query = MongoDBObject(Constants.RULE_ID -> rule.id)
     collection.update(query, ruleObj)
     Right(rule)
@@ -48,9 +48,17 @@ class RuleDaoImpl extends RuleDao {
   def delete(ruleId: String): Unit = {
 
     var query = MongoDBObject(Constants.RULE_ID -> ruleId)
-    val collection = db(Constants.RULE_COLLECTION)
+    val collection = mongoClient(Constants.RULE_COLLECTION)
     collection.update(query, MongoDBObject(Constants.SET_OP ->
       MongoDBObject(Constants.SOFT_DELETED -> true)))
   }
 
+  def activate(rules: Array[Rule]): Unit = {
+    for (rule <- rules) {
+      val query = MongoDBObject(Constants.RULE_ID -> rule.id)
+      val collection = mongoClient(Constants.RULE_COLLECTION)
+      collection.update(query, MongoDBObject(Constants.SET_OP ->
+        MongoDBObject(Constants.RULE_IS_ACTIVE -> true)))
+    }
+  }
 }
