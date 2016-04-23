@@ -16,4 +16,24 @@ class RuleServiceImpl extends RuleService {
     val rule = RuleConverter.fromJson(json)
     ruleDao.insert(rule)
   }
+
+  def getRule(ruleId: String): Either[Throwable, JsValue] = {
+    val rule = ruleDao.get(ruleId)
+    rule match {
+      case Left(exception) => Left(throw exception)
+      case Right(rule) => Right(RuleConverter.toJson(rule))
+    }
+  }
+
+  def updateRule(json: JsValue): Either[Throwable, JsValue] = {
+    val rule = RuleConverter.fromJson(json)
+    ruleDao.update(rule) match {
+      case Left(exception) => Left(throw exception)
+      case Right(rule) => Right(RuleConverter.toJson(rule))
+    }
+  }
+
+  def deleteRule(ruleId: String): Unit = {
+    ruleDao.delete(ruleId)
+  }
 }
