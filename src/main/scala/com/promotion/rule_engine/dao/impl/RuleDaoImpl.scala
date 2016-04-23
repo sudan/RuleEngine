@@ -1,8 +1,8 @@
 package com.promotion.rule_engine.dao.impl
 
-import com.mongodb.casbah.MongoDB
 import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
+import com.promotion.rule_engine.bootstrap.MongoClient
 import com.promotion.rule_engine.builder.RuleBuilder
 import com.promotion.rule_engine.dao.api.RuleDao
 import com.promotion.rule_engine.generator.IdGenerator
@@ -12,7 +12,9 @@ import com.promotion.rule_engine.model.Rule
 /**
  * Created by sudan on 8/4/16.
  */
-class RuleDaoImpl(db: MongoDB) extends RuleDao {
+class RuleDaoImpl extends RuleDao {
+
+  val db = MongoClient.getConnection
 
   def insert(rule: Rule): String = {
 
