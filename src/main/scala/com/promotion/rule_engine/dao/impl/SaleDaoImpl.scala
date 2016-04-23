@@ -58,22 +58,20 @@ class SaleDaoImpl extends SaleDao {
 
       redisClient.pipeline { client =>
 
-        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRIES + v, ruleId))
-        rule.regionList.states.foreach(v => client.sadd(Constants.STATES + v, ruleId))
-        rule.regionList.cities.foreach(v => client.sadd(Constants.CITIES + v, ruleId))
-        rule.regionList.areas.foreach(v => client.sadd(Constants.AREAS + v, ruleId))
-        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODES + v, ruleId))
+        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRIES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.states.foreach(v => client.sadd(Constants.STATES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.cities.foreach(v => client.sadd(Constants.CITIES + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.areas.foreach(v => client.sadd(Constants.AREAS + Constants.SEPARATOR + v, ruleId))
+        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODES + Constants.SEPARATOR + v, ruleId))
 
-        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORIES + v,
-          ruleId))
-        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORIES + v,
-          ruleId))
-        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICALS + v, ruleId))
-        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_IDS + v, ruleId))
+        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORIES + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORIES + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICALS + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_IDS + Constants.SEPARATOR + v, ruleId))
 
         for ((key, valueList) <- rule.properties) {
           for (value <- valueList) {
-            client.sadd(key + value, ruleId)
+            client.sadd(key + Constants.SEPARATOR + value, ruleId)
           }
         }
 

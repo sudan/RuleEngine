@@ -11,6 +11,7 @@ object Constants {
 
   val SOFT_DELETED = "soft_deleted"
   val ID = "id"
+  val SEPARATOR = ":"
 
   val SET_OP = "$set"
 
