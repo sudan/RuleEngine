@@ -2,30 +2,31 @@ package com.promotion.rule_engine.dao.impl
 
 import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.bootstrap.MongoClient
+import com.promotion.rule_engine.bootstrap.{MongoClient, RedisClient => RedisCustomClient}
 import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
 import com.promotion.rule_engine.mapper.SaleMapper
-import com.promotion.rule_engine.model.Sale
+import com.promotion.rule_engine.model.{Rule, Sale}
 
 /**
  * Created by sudan on 09/04/16.
  */
 class SaleDaoImpl extends SaleDao {
 
-  val db = MongoClient.getConnection
+  val mongoClient = MongoClient.getConnection
+  val redisClient = RedisCustomClient.getConnection
 
   def insert(sale: Sale): String = {
     val id = IdGenerator.generate(Constants.SALE_ID_PREFIX, Constants.SALE_ID_LENGTH)
     val saleObj = SaleBuilder.build(sale, id)
-    val collection = db(Constants.SALE_COLLECTION)
+    val collection = mongoClient(Constants.SALE_COLLECTION)
     collection.insert(saleObj)
     id
   }
 
   def get(saleId: String): Either[Throwable, Sale] = {
-    val collection = db(Constants.SALE_COLLECTION)
+    val collection = mongoClient(Constants.SALE_COLLECTION)
     val document = collection.findOne(MongoDBObject(Constants.SALE_ID -> saleId,
       Constants.SOFT_DELETED -> false))
     document match {
@@ -37,7 +38,7 @@ class SaleDaoImpl extends SaleDao {
 
   def update(sale: Sale): Either[Throwable, Sale] = {
     val saleObj = SaleBuilder.build(sale, sale.id)
-    val collection = db(Constants.SALE_COLLECTION)
+    val collection = mongoClient(Constants.SALE_COLLECTION)
     val query = MongoDBObject(Constants.SALE_ID -> sale.id)
     collection.update(query, saleObj)
     Right(sale)
@@ -45,8 +46,38 @@ class SaleDaoImpl extends SaleDao {
 
   def delete(saleId: String): Unit = {
     val query = MongoDBObject(Constants.SALE_ID -> saleId)
-    val collection = db(Constants.SALE_COLLECTION)
+    val collection = mongoClient(Constants.SALE_COLLECTION)
     collection.update(query, MongoDBObject(Constants.SET_OP ->
       MongoDBObject(Constants.SOFT_DELETED -> true)))
+  }
+
+  def applyRules(rules: Array[Rule]): Unit = {
+
+    for (rule <- rules) {
+      val ruleId = rule.id
+
+      redisClient.pipeline { client =>
+
+        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRIES + v, ruleId))
+        rule.regionList.states.foreach(v => client.sadd(Constants.STATES + v, ruleId))
+        rule.regionList.cities.foreach(v => client.sadd(Constants.CITIES + v, ruleId))
+        rule.regionList.areas.foreach(v => client.sadd(Constants.AREAS + v, ruleId))
+        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODES + v, ruleId))
+
+        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORIES + v,
+          ruleId))
+        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORIES + v,
+          ruleId))
+        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICALS + v, ruleId))
+        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_IDS + v, ruleId))
+
+        for ((key, valueList) <- rule.properties) {
+          for (value <- valueList) {
+            client.sadd(key + value, ruleId)
+          }
+        }
+
+      }
+    }
   }
 }
