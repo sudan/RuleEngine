@@ -24,10 +24,9 @@ trait SaleDao {
   /**
    * Update the sale and return the sale object updated
    * @param sale
-   * @param saleId
    * @return
    */
-  def update(sale: Sale, saleId: String): Either[Throwable, Sale]
+  def update(sale: Sale): Either[Throwable, Sale]
 
   /**
    * Soft delete the sale given the saleId

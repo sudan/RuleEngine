@@ -35,10 +35,10 @@ class SaleDaoImpl extends SaleDao {
     }
   }
 
-  def update(sale: Sale, saleId: String): Either[Throwable, Sale] = {
-    val saleObj = SaleBuilder.build(sale, saleId)
+  def update(sale: Sale): Either[Throwable, Sale] = {
+    val saleObj = SaleBuilder.build(sale, sale.id)
     val collection = db(Constants.SALE_COLLECTION)
-    val query = MongoDBObject(Constants.SALE_ID -> saleId)
+    val query = MongoDBObject(Constants.SALE_ID -> sale.id)
     collection.update(query, saleObj)
     Right(sale)
   }
