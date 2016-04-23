@@ -24,10 +24,9 @@ trait CampaignDao {
   /**
    * Update the campaign and return the campaign object updated
    * @param campaign
-   * @param campaignId
    * @return
    */
-  def update(campaign: Campaign, campaignId: String): Either[Throwable, Campaign]
+  def update(campaign: Campaign): Either[Throwable, Campaign]
 
   /**
    * Soft delete the campaign given the campaignId

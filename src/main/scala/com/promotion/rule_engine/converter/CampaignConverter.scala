@@ -19,7 +19,7 @@ object CampaignConverter {
       def writes(campaign: Campaign) = Json.obj(
         Constants.CAMPAIGN_RULE_IDS -> Json.toJsFieldJsValueWrapper(campaign.ruleIds),
         Constants.CAMPAIGN_START_DATE -> format.print(campaign.startDate),
-        Constants.VERTICALS -> format.print(campaign.endDate)
+        Constants.CAMPAIGN_END_DATE -> format.print(campaign.endDate)
       )
     }
     Json.toJson(campaign)
@@ -29,7 +29,7 @@ object CampaignConverter {
 
     val idResult = (json \ Constants.ID).validate[String]
     val id = idResult match {
-      case s: JsSuccess[String] => idResult.asInstanceOf[String]
+      case s: JsSuccess[String] => s.value
       case e: JsError => Constants.SENTINEL_ID
     }
 

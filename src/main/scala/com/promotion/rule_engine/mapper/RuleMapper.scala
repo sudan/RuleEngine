@@ -1,11 +1,10 @@
 package com.promotion.rule_engine.mapper
 
-import com.mongodb.{BasicDBObject, DBObject}
+import com.mongodb.{BasicDBList, BasicDBObject, DBObject}
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.model.Rule
 
 import scala.collection.JavaConverters._
-import scala.collection.mutable.Map
 
 /**
  * Created by sudan on 09/04/16.
@@ -22,8 +21,8 @@ object RuleMapper {
     val version = dBObject.get(Constants.RULE_VERSION).asInstanceOf[String]
     val discount = dBObject.get(Constants.DISCOUNT).asInstanceOf[Double]
     val boost = dBObject.get(Constants.RULE_BOOST).asInstanceOf[Int]
-    val propertiesMap = dBObject.get(Constants.RULE_PROPERTIES).asInstanceOf[BasicDBObject].toMap
-    val properties = propertiesMap.asScala.asInstanceOf[Map[String, Array[String]]]
+    val propertiesMap = dBObject.get(Constants.RULE_PROPERTIES).asInstanceOf[BasicDBObject].toMap.asScala
+    val properties = propertiesMap.map { case (k, v) => (k.toString, v.asInstanceOf[BasicDBList].toArray.map(_.toString)) }
     val regionList = RegionListMapper.map(dBObject)
     val categoryList = CategoryListMapper.map(dBObject)
     val isActive = dBObject.get(Constants.RULE_IS_ACTIVE).asInstanceOf[Boolean]

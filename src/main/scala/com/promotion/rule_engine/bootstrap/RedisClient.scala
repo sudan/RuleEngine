@@ -4,8 +4,13 @@ import com.redis.{RedisClient => RedisDBClient}
 
 object RedisClient {
 
-  def init(hostName: String, port: Int) = {
-    val db = new RedisDBClient(hostName, port)
-    db
+  lazy val db = init
+
+  def init = {
+    val hostName = ConfigManager.getValue("redis.hostName")
+    val port = (ConfigManager.getValue("redis.portNumber")).toInt
+    new RedisDBClient(hostName, port)
   }
+
+  def getConnection = db
 }

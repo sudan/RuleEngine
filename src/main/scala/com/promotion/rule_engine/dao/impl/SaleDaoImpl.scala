@@ -1,8 +1,8 @@
 package com.promotion.rule_engine.dao.impl
 
-import com.mongodb.casbah.MongoDB
 import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
+import com.promotion.rule_engine.bootstrap.MongoClient
 import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
@@ -12,7 +12,9 @@ import com.promotion.rule_engine.model.Sale
 /**
  * Created by sudan on 09/04/16.
  */
-class SaleDaoImpl(db: MongoDB) extends SaleDao {
+class SaleDaoImpl extends SaleDao {
+
+  val db = MongoClient.getConnection
 
   def insert(sale: Sale): String = {
     val id = IdGenerator.generate(Constants.SALE_ID_PREFIX, Constants.SALE_ID_LENGTH)
@@ -33,10 +35,10 @@ class SaleDaoImpl(db: MongoDB) extends SaleDao {
     }
   }
 
-  def update(sale: Sale, saleId: String): Either[Throwable, Sale] = {
-    val saleObj = SaleBuilder.build(sale, saleId)
+  def update(sale: Sale): Either[Throwable, Sale] = {
+    val saleObj = SaleBuilder.build(sale, sale.id)
     val collection = db(Constants.SALE_COLLECTION)
-    val query = MongoDBObject(Constants.SALE_ID -> saleId)
+    val query = MongoDBObject(Constants.SALE_ID -> sale.id)
     collection.update(query, saleObj)
     Right(sale)
   }

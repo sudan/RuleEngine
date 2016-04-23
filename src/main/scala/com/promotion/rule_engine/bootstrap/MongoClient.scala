@@ -4,8 +4,13 @@ import com.mongodb.casbah.{MongoClient => MongoDBClient, MongoClientURI}
 
 object MongoClient {
 
-  def init(uri: String, dbName: String) = {
-    val db = MongoDBClient(MongoClientURI(uri))(dbName)
-    db
+  lazy val db = init
+
+  def init = {
+    val uri = ConfigManager.getValue("mongo.uri")
+    val dbName = ConfigManager.getValue("mongo.dbName")
+    MongoDBClient(MongoClientURI(uri))(dbName)
   }
+
+  def getConnection = db
 }
