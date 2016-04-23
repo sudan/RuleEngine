@@ -35,10 +35,10 @@ class CampaignDaoImpl extends CampaignDao {
     }
   }
 
-  def update(campaign: Campaign, campaignId: String): Either[Throwable, Campaign] = {
-    val campaignObj = CampaignBuilder.build(campaign, campaignId)
+  def update(campaign: Campaign): Either[Throwable, Campaign] = {
+    val campaignObj = CampaignBuilder.build(campaign, campaign.id)
     val collection = db(Constants.CAMPAIGN_COLLECTION)
-    val query = MongoDBObject(Constants.CAMPAIGN_ID -> campaignId)
+    val query = MongoDBObject(Constants.CAMPAIGN_ID -> campaign.id)
     collection.update(query, campaignObj)
     Right(campaign)
   }

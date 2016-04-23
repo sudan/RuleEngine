@@ -26,7 +26,7 @@ object SaleConverter {
 
     val idResult = (json \ Constants.ID).validate[String]
     val id = idResult match {
-      case s: JsSuccess[String] => idResult.asInstanceOf[String]
+      case s: JsSuccess[String] => s.value
       case e: JsError => Constants.SENTINEL_ID
     }
 
