@@ -15,25 +15,25 @@ class DiscountDaoImpl extends DiscountDao {
   var redisClient = RedisClient.getConnection
 
   def getRuleIds(region: Region): SortedSet[String] = {
-    var rules = getRuleIds(Constants.PINCODES, region.pincode)
+    var rules = getRuleIds(Constants.PINCODE, region.pincode)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.AREAS, region.area)
+    rules = getRuleIds(Constants.AREA, region.area)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.CITIES, region.city)
-    if (rules.size > 0) {
-      return rules
-    }
-
-    rules = getRuleIds(Constants.STATES, region.state)
+    rules = getRuleIds(Constants.CITY, region.city)
     if (rules.size > 0) {
       return rules
     }
 
-    rules = getRuleIds(Constants.COUNTRIES, region.country)
+    rules = getRuleIds(Constants.STATE, region.state)
+    if (rules.size > 0) {
+      return rules
+    }
+
+    rules = getRuleIds(Constants.COUNTRY, region.country)
     if (rules.size > 0) {
       return rules
     }
@@ -41,20 +41,20 @@ class DiscountDaoImpl extends DiscountDao {
   }
 
   def getRuleIds(category: Category): SortedSet[String] = {
-    var rules = getRuleIds(Constants.PRODUCT_IDS, category.productId)
+    var rules = getRuleIds(Constants.PRODUCT_ID, category.productId)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.VERTICALS, category.vertical)
+    rules = getRuleIds(Constants.VERTICAL, category.vertical)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.SUB_CATEGORIES, category.subCategory)
+    rules = getRuleIds(Constants.SUB_CATEGORY, category.subCategory)
     if (rules.size > 0) {
       return rules
     }
 
-    rules = getRuleIds(Constants.MAIN_CATEGORIES, category.mainCategory)
+    rules = getRuleIds(Constants.MAIN_CATEGORY, category.mainCategory)
     if (rules.size > 0) {
       return rules
     }
