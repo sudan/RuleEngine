@@ -48,6 +48,7 @@ object Constants {
   val PRODUCT_ID = "product_id"
   val CATEGORY = "category"
 
+  val RULE = "rule"
   val RULE_ID = "_id"
   val RULE_NAME = "name"
   val RULE_DESCRIPTION = "description"

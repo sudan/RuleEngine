@@ -4,6 +4,7 @@ import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.bootstrap.RedisClient
 import com.promotion.rule_engine.dao.api.DiscountDao
 import com.promotion.rule_engine.model.{Category, Region}
+import scala.collection.mutable.Set
 
 import scala.collection.mutable.SortedSet
 
@@ -14,7 +15,7 @@ class DiscountDaoImpl extends DiscountDao {
 
   var redisClient = RedisClient.getConnection
 
-  def getRuleIds(region: Region): SortedSet[String] = {
+  def getRuleIds(region: Region): Set[String] = {
     var rules = getRuleIds(Constants.PINCODE, region.pincode)
     if (rules.size > 0) {
       return rules
@@ -37,10 +38,10 @@ class DiscountDaoImpl extends DiscountDao {
     if (rules.size > 0) {
       return rules
     }
-    SortedSet[String]()
+    Set.empty[String]
   }
 
-  def getRuleIds(category: Category): SortedSet[String] = {
+  def getRuleIds(category: Category): Set[String] = {
     var rules = getRuleIds(Constants.PRODUCT_ID, category.productId)
     if (rules.size > 0) {
       return rules
@@ -59,12 +60,12 @@ class DiscountDaoImpl extends DiscountDao {
       return rules
     }
 
-    SortedSet[String]()
+    Set.empty[String]
   }
 
-  def getRuleIds(properties: Map[String, String]): SortedSet[String] = {
+  def getRuleIds(properties: Map[String, String]): Set[String] = {
 
-    val rules = SortedSet[String]()
+    val rules = Set.empty[String]
     for ((key, value) <- properties) {
       val propertyRule = getRuleIds(key, value)
       if (propertyRule.size > 0) {
@@ -74,7 +75,7 @@ class DiscountDaoImpl extends DiscountDao {
     rules
   }
 
-  private[this] def getRuleIds(prefix: String, suffix: String): SortedSet[String] = {
+  private[this] def getRuleIds(prefix: String, suffix: String): Set[String] = {
     val rules = SortedSet[String]()
     var ruleSet = redisClient.smembers(prefix + Constants.SEPARATOR + suffix).get
     ruleSet.map(ruleIds => rules += ruleIds.get)

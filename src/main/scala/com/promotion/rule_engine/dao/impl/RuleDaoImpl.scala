@@ -2,7 +2,7 @@ package com.promotion.rule_engine.dao.impl
 
 import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.bootstrap.MongoClient
+import com.promotion.rule_engine.bootstrap.{RedisClient, MongoClient}
 import com.promotion.rule_engine.builder.RuleBuilder
 import com.promotion.rule_engine.dao.api.RuleDao
 import com.promotion.rule_engine.generator.IdGenerator
@@ -15,6 +15,7 @@ import com.promotion.rule_engine.model.Rule
 class RuleDaoImpl extends RuleDao {
 
   val mongoClient = MongoClient.getConnection
+  val redisClient = RedisClient.getConnection
 
   def insert(rule: Rule): String = {
 
@@ -60,5 +61,14 @@ class RuleDaoImpl extends RuleDao {
       collection.update(query, MongoDBObject(Constants.SET_OP ->
         MongoDBObject(Constants.RULE_IS_ACTIVE -> true)))
     }
+  }
+
+  def getDiscountedAttrs(ruleId: String): Map[String, String] = {
+
+    val discount = redisClient.hget(Constants.RULE + Constants.SEPARATOR + ruleId,
+      Constants.DISCOUNT).asInstanceOf[String]
+    val boost = redisClient.hget(Constants.RULE + Constants.SEPARATOR + ruleId,
+      Constants.RULE_BOOST).asInstanceOf[String]
+    Map(Constants.DISCOUNT -> discount, Constants.RULE_BOOST -> boost)
   }
 }

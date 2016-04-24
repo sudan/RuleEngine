@@ -21,6 +21,8 @@ class DiscountServiceImpl extends DiscountService {
     val categoryRuleIds = discountDao.getRuleIds(category)
     val propertyRuleIds = discountDao.getRuleIds(properties)
 
+    val ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+
     return 1.2
 
   }
