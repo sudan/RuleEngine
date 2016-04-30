@@ -67,6 +67,10 @@ object Constants {
   val CAMPAIGN_RULE_IDS = "rule_ids"
   val CAMPAIGN_START_DATE = "start_date"
   val CAMPAIGN_END_DATE = "end_date"
+  val CAMPAIGN_RULE_RELATIONSHIPS = "relationships"
+  val CAMPAIGN_FIRST_RULE_ID = "rule_one"
+  val CAMPAIGN_SECOND_RULE_ID = "rule_two"
+  val RULE_OPERATION = "operation"
 
   val SALE_ID = "_id"
   val SALE_CAMPAIGN_IDS = "campaign_ids"
@@ -77,4 +81,6 @@ object Constants {
   val SENTINEL_TIMESTAMP = -1
 
   val RULE_RELATIONSHIP = "relationships"
+
+  val OP_AND = "and"
 }

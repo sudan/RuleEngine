@@ -44,4 +44,10 @@ trait RuleDao {
    * Get attributes specific to discounts
    */
   def getDiscountedAttrs(ruleId: String): Map[String, String]
+
+  /**
+   * Get rule relationships and their operations
+   * @return
+   */
+  def getRuleRelationships(): Map[String, String]
 }

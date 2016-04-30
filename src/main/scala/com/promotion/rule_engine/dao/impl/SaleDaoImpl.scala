@@ -52,7 +52,7 @@ class SaleDaoImpl extends SaleDao {
       MongoDBObject(Constants.SOFT_DELETED -> true)))
   }
 
-  def applyRules(rules: Array[Rule]): Unit = {
+  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship]): Unit = {
 
     redisClient.flushall
     redisClient.pipeline { client =>
@@ -77,6 +77,11 @@ class SaleDaoImpl extends SaleDao {
         }
         client.hset(Constants.RULE + Constants.SEPARATOR + ruleId, Constants.DISCOUNT, rule.discount)
         client.hset(Constants.RULE + Constants.SEPARATOR + ruleId, Constants.RULE_BOOST, rule.boost)
+
+        for (ruleRelationship <- ruleRelationships) {
+          val key = ruleRelationship.firstRuleId + Constants.SEPARATOR + ruleRelationship.secondRuleId
+          client.hset(Constants.RULE_RELATIONSHIP, key, ruleRelationship.operation)
+        }
       }
     }
     ruleDao.activate(rules)

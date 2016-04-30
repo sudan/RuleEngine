@@ -2,7 +2,7 @@ package com.promotion.rule_engine.service.impl
 
 import com.promotion.rule_engine.converter.SaleConverter
 import com.promotion.rule_engine.dao.impl.{RuleDaoImpl, CampaignDaoImpl, SaleDaoImpl}
-import com.promotion.rule_engine.model.Rule
+import com.promotion.rule_engine.model.{RuleRelationship, Rule}
 import com.promotion.rule_engine.service.api.SaleService
 import play.api.libs.json.JsValue
 
@@ -50,11 +50,13 @@ class SaleServiceImpl extends SaleService {
       case Right(sale) =>
         val campaignIds = sale.campaignIds
         val rules = ArrayBuffer[Rule]()
+        val ruleRelationships = ArrayBuffer[RuleRelationship]()
         for (campaignId <- campaignIds) {
           val campaign = campaignDao.get(campaignId)
           campaign match {
             case Left(exception) => println("Campaign " + campaignId + " " + exception)
             case Right(campaign) =>
+              ruleRelationships ++= campaign.ruleRelationships
               val ruleIds = campaign.ruleIds
               for (ruleId <- ruleIds) {
                 val rule = ruleDao.get(ruleId)
@@ -66,7 +68,7 @@ class SaleServiceImpl extends SaleService {
               }
           }
         }
-        saleDao.applyRules(rules.toArray)
+        saleDao.applyRules(rules.toArray, ruleRelationships.toArray)
         Right(true)
     }
   }

@@ -71,4 +71,9 @@ class RuleDaoImpl extends RuleDao {
       Constants.RULE_BOOST).get
     Map(Constants.DISCOUNT -> discount, Constants.RULE_BOOST -> boost)
   }
+
+  def getRuleRelationships(): Map[String, String] = {
+    redisClient.hgetall(Constants.RULE_RELATIONSHIP).get
+  }
+
 }
