@@ -45,7 +45,10 @@ class DiscountServiceImpl extends DiscountService {
         prevBoost = currentBoost
       } else {
         var currentBoost = discountAttrs(Constants.RULE_BOOST).toInt
-        if (currentBoost > prevBoost) {
+        if (currentBoost == prevBoost) {
+          discount = Math.max(discount, discountAttrs(Constants.DISCOUNT).toDouble)
+        }
+        else if (currentBoost > prevBoost) {
           prevBoost = currentBoost
           discount = discountAttrs(Constants.DISCOUNT).toDouble
         }
