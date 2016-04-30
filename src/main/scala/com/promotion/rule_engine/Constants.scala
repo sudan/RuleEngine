@@ -81,4 +81,6 @@ object Constants {
   val SENTINEL_TIMESTAMP = -1
 
   val RULE_RELATIONSHIP = "relationships"
+
+  val OP_AND = "and"
 }
