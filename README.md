@@ -77,4 +77,11 @@ Rules can be defined on
 
 Given a product with information on buyer's region and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties. and finds a intersection of all rule ids from the above three matches (only non empty sets are used). If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
 
+There is a audit service maintained to track rule,campaign and sale changes
 
+Persistent information is stored in mongodb and once the sale is started, it flushes redis and builds rules with discounting information in queryable format for faster response in redis (FYI : This is a one time process which takes time since it fetches all campaigns, rules from mongodb and populates redis). Post that all reads of discount calculation happen from redis
+
+# What is not solved
+
+1. This module doesnt serve as a caching engine of discounts for given input. It is upto to the caller to cache information of discount against product id
+2. Edits requires re building redis information and can be a bit time consuming. So this project is not meant for real time edits but its  meant for real time calculation of discounts
