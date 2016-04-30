@@ -38,5 +38,5 @@ trait SaleDao {
    * Apply rules by storing discount related information in retrieval form
    * @param rules
    */
-  def applyRules(rules: Array[Rule]): Unit
+  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship]): Unit
 }
