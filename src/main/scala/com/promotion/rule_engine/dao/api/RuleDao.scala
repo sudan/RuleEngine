@@ -33,4 +33,15 @@ trait RuleDao {
    * @param ruleId
    */
   def delete(ruleId: String): Unit
+
+  /**
+   * Activate all the rules
+   * @param rules
+   */
+  def activate(rules: Array[Rule]): Unit
+
+  /**
+   * Get attributes specific to discounts
+   */
+  def getDiscountedAttrs(ruleId: String): Map[String, String]
 }

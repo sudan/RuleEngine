@@ -35,6 +35,20 @@ object Constants {
   val VERTICALS = "verticals"
   val PRODUCT_IDS = "product_ids"
 
+  val REGION = "region"
+  val COUNTRY = "country"
+  val STATE = "state"
+  val CITY = "city"
+  val AREA = "area"
+  val PINCODE = "pincode"
+
+  val MAIN_CATEGORY = "main_category"
+  val SUB_CATEGORY = "sub_category"
+  val VERTICAL = "vertical"
+  val PRODUCT_ID = "product_id"
+  val CATEGORY = "category"
+
+  val RULE = "rule"
   val RULE_ID = "_id"
   val RULE_NAME = "name"
   val RULE_DESCRIPTION = "description"
@@ -59,5 +73,6 @@ object Constants {
 
   val DISPLAY_FORMAT = "YYYY-MM-dd"
   val SENTINEL_ID = "-1"
+  val SENTINEL_BOOST = -1
   val SENTINEL_TIMESTAMP = -1
 }
