@@ -68,3 +68,13 @@ Collection of campaigns form a sale
 ```
 
 By default rules will be in dormant state unless the sale is explictly started.
+
+Rules can be defined on
+
+1. Region - Which includes countries, states, cities, areas and pincodes. Order of priority is bottom up where pincodes are given the most priority and countries given the least to narrow down
+2. Category - Which includes main categories, sub categories, verticals and product ids. Order of priority is bottom up where product ids are given the most priority and main categories given the least to narrow down
+3. List of properties where each is a key to list of values
+
+Given a product with information on buyer's region information and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties. and finds a intersection of all rule ids from the above three matches (only non empty set are used). If there is a single rule id discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
+
+
