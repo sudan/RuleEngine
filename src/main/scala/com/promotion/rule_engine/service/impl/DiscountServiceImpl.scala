@@ -17,13 +17,9 @@ class DiscountServiceImpl extends DiscountService {
   val ruleDao = new RuleDaoImpl
 
   def getDiscount(json: JsValue): Double = {
-    val region = RegionConverter.fromJson(json)
-    val category = CategoryConverter.fromJson(json)
-    val properties = ProductAttributeConverter.fromJson(json)
-
-    var regionRuleIds = discountDao.getRuleIds(region)
-    val categoryRuleIds = discountDao.getRuleIds(category)
-    val propertyRuleIds = discountDao.getRuleIds(properties)
+    var regionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json))
+    val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json))
+    val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json))
 
     var ruleIds = Set.empty[String]
     if (regionRuleIds.isEmpty || categoryRuleIds.isEmpty) {
@@ -51,7 +47,6 @@ class DiscountServiceImpl extends DiscountService {
         prevRuleId = ruleId
       } else {
         var currentBoost = discountAttrs(Constants.RULE_BOOST).toInt
-
         if (hasRelationship(ruleId, prevRuleId, ruleRelationshipMap)) {
           discount = getCompositeDiscount(ruleId, prevRuleId, discountAttrs(Constants.DISCOUNT)
             .toDouble, discount, ruleRelationshipMap)
