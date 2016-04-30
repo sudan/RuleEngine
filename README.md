@@ -79,7 +79,7 @@ Given a product with information on buyer's region and product properties (only 
 
 There is a audit service maintained to track rule,campaign and sale changes
 
-Persistent information is stored in mongodb and once the sale is started, it flushes redis and builds rules with discounting information in queryable format for faster response in redis (FYI : This is a one time process which takes time since it fetches all campaigns, rules from mongodb and populates redis). Post that all reads of discount calculation happen from redis
+Persistent information is stored in mongodb and once the sale is started, it flushes redis and builds rules with discounting information in queryable format for faster response in redis (FYI : This is a one time process which takes time since it fetches all campaigns, rules from mongodb and populates redis). Post that all reads of discount calculation happens from redis
 
 # What is not solved
 
