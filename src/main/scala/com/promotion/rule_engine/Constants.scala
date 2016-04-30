@@ -73,5 +73,6 @@ object Constants {
 
   val DISPLAY_FORMAT = "YYYY-MM-dd"
   val SENTINEL_ID = "-1"
+  val SENTINEL_BOOST = -1
   val SENTINEL_TIMESTAMP = -1
 }

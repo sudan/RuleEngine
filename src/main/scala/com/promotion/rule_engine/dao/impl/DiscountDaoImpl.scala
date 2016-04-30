@@ -76,7 +76,7 @@ class DiscountDaoImpl extends DiscountDao {
   }
 
   private[this] def getRuleIds(prefix: String, suffix: String): Set[String] = {
-    val rules = SortedSet[String]()
+    val rules = Set[String]()
     var ruleSet = redisClient.smembers(prefix + Constants.SEPARATOR + suffix).get
     ruleSet.map(ruleIds => rules += ruleIds.get)
     rules

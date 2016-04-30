@@ -66,9 +66,9 @@ class RuleDaoImpl extends RuleDao {
   def getDiscountedAttrs(ruleId: String): Map[String, String] = {
 
     val discount = redisClient.hget(Constants.RULE + Constants.SEPARATOR + ruleId,
-      Constants.DISCOUNT).asInstanceOf[String]
+      Constants.DISCOUNT).get
     val boost = redisClient.hget(Constants.RULE + Constants.SEPARATOR + ruleId,
-      Constants.RULE_BOOST).asInstanceOf[String]
+      Constants.RULE_BOOST).get
     Map(Constants.DISCOUNT -> discount, Constants.RULE_BOOST -> boost)
   }
 }
