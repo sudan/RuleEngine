@@ -4,5 +4,6 @@ case class Campaign(
                      id: String,
                      ruleIds: Array[String],
                      startDate: Long,
-                     endDate: Long
+                     endDate: Long,
+                     ruleRelationships: Array[RuleRelationship]
                      )

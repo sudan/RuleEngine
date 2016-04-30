@@ -1,7 +1,7 @@
 package com.promotion.rule_engine.converter
 
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.model.Campaign
+import com.promotion.rule_engine.model.{RuleRelationship, Campaign}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import play.api.libs.json._
@@ -36,6 +36,6 @@ object CampaignConverter {
     val ruleIds = (json \ Constants.CAMPAIGN_RULE_IDS).as[Array[String]]
     val startDate = new DateTime((json \ Constants.CAMPAIGN_START_DATE).as[String]).getMillis
     val endDate = new DateTime((json \ Constants.CAMPAIGN_END_DATE).as[String]).getMillis
-    Campaign(id, ruleIds, startDate, endDate)
+    Campaign(id, ruleIds, startDate, endDate, Array[RuleRelationship]())
   }
 }
