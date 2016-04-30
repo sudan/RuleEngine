@@ -1,10 +1,11 @@
 package com.promotion.rule_engine.service.impl
 
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.converter.{ProductAttributeConverter, CategoryConverter, RegionConverter}
-import com.promotion.rule_engine.dao.impl.{RuleDaoImpl, DiscountDaoImpl}
+import com.promotion.rule_engine.converter.{CategoryConverter, ProductAttributeConverter, RegionConverter}
+import com.promotion.rule_engine.dao.impl.{DiscountDaoImpl, RuleDaoImpl}
 import com.promotion.rule_engine.service.api.DiscountService
 import play.api.libs.json.JsValue
+
 import scala.collection.mutable.Set
 
 /**
@@ -26,7 +27,7 @@ class DiscountServiceImpl extends DiscountService {
 
     var ruleIds = Set.empty[String]
     if (regionRuleIds.isEmpty || categoryRuleIds.isEmpty) {
-        ruleIds = regionRuleIds.union(categoryRuleIds)
+      ruleIds = regionRuleIds.union(categoryRuleIds)
     } else {
       ruleIds = regionRuleIds.intersect(categoryRuleIds)
     }
@@ -71,7 +72,7 @@ class DiscountServiceImpl extends DiscountService {
   }
 
   private[this] def hasRelationship(currentRuleId: String, prevRuleId: String, ruleRelationshipMap:
-    Map[String, String]): Boolean = {
+  Map[String, String]): Boolean = {
     val key = currentRuleId + Constants.SEPARATOR + prevRuleId
     val inverseKey = prevRuleId + Constants.SEPARATOR + currentRuleId
     ruleRelationshipMap.exists(_._1 == key) || ruleRelationshipMap.exists(_._1 == inverseKey)
@@ -79,7 +80,7 @@ class DiscountServiceImpl extends DiscountService {
 
   private[this] def getCompositeDiscount(currentRuleId: String, prevRuleId: String,
                                          currentDiscount: Double,
-                           prevDiscount: Double, ruleRelationshipMap: Map[String, String]): Double = {
+                                         prevDiscount: Double, ruleRelationshipMap: Map[String, String]): Double = {
     val key = currentRuleId + Constants.SEPARATOR + prevRuleId
     val inverseKey = prevRuleId + Constants.SEPARATOR + currentRuleId
 
