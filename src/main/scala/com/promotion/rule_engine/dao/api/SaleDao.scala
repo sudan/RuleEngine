@@ -1,6 +1,6 @@
 package com.promotion.rule_engine.dao.api
 
-import com.promotion.rule_engine.model.{Rule, Sale}
+import com.promotion.rule_engine.model.{RuleRelationship, Rule, Sale}
 
 /**
  * Created by sudan on 10/04/16.

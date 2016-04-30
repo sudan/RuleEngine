@@ -7,7 +7,7 @@ import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
 import com.promotion.rule_engine.mapper.SaleMapper
-import com.promotion.rule_engine.model.{Rule, Sale}
+import com.promotion.rule_engine.model.{RuleRelationship, Rule, Sale}
 
 /**
  * Created by sudan on 09/04/16.
@@ -59,18 +59,14 @@ class SaleDaoImpl extends SaleDao {
 
       for (rule <- rules) {
         val ruleId = rule.id
-        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRY + Constants
-          .SEPARATOR + v, ruleId))
+        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
         rule.regionList.states.foreach(v => client.sadd(Constants.STATE + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v,
-          ruleId))
+        rule.regionList.cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v, ruleId))
         rule.regionList.areas.foreach(v => client.sadd(Constants.AREA + Constants.SEPARATOR + v, ruleId))
         rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
 
-        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY +
-          Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY +
-          Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
         rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
         rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
 

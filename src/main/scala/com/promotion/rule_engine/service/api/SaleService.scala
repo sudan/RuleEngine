@@ -32,4 +32,10 @@ trait SaleService {
    * @param saleId
    */
   def deleteSale(saleId: String): Unit
+
+  /**
+   * Initiate sale by applying rules and their relationships
+   * @param saleId
+   */
+  def startSale(saleId: String): Either[Throwable, Boolean]
 }
