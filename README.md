@@ -10,7 +10,7 @@ A generalized promotion rule engine for products which allows to define rules fo
 
 # Overview
 
-Basic idea behind building this rule engine is to create a minimal module for defining rules over ecommerce products over dimensions such as region, category and product specific properties which is used as a criteria to calculate discounts.
+Basic idea behind building this rule engine is to create a minimal module to define rules for ecommerce products over dimensions such as region, category and product specific properties which is used as a criteria to calculate discounts.
 
 Hierarchy
 
