@@ -2,7 +2,7 @@ package com.promotion.rule_engine.service.impl
 
 import com.promotion.rule_engine.converter.SaleConverter
 import com.promotion.rule_engine.dao.impl.{RuleDaoImpl, CampaignDaoImpl, SaleDaoImpl}
-import com.promotion.rule_engine.model.{RuleRelationship, Campaign, Rule}
+import com.promotion.rule_engine.model.Rule
 import com.promotion.rule_engine.service.api.SaleService
 import play.api.libs.json.JsValue
 
