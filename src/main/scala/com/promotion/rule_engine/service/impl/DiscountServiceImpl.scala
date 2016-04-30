@@ -48,8 +48,7 @@ class DiscountServiceImpl extends DiscountService {
       } else {
         var currentBoost = discountAttrs(Constants.RULE_BOOST).toInt
         if (hasRelationship(ruleId, prevRuleId, ruleRelationshipMap)) {
-          discount = getCompositeDiscount(ruleId, prevRuleId, discountAttrs(Constants.DISCOUNT)
-            .toDouble, discount, ruleRelationshipMap)
+          discount = getCompositeDiscount(ruleId, prevRuleId, discountAttrs(Constants.DISCOUNT).toDouble, discount, ruleRelationshipMap)
         } else {
           if (currentBoost == prevBoost) {
             discount = Math.max(discount, discountAttrs(Constants.DISCOUNT).toDouble)
@@ -66,8 +65,7 @@ class DiscountServiceImpl extends DiscountService {
 
   }
 
-  private[this] def hasRelationship(currentRuleId: String, prevRuleId: String, ruleRelationshipMap:
-  Map[String, String]): Boolean = {
+  private[this] def hasRelationship(currentRuleId: String, prevRuleId: String, ruleRelationshipMap: Map[String, String]): Boolean = {
     val key = currentRuleId + Constants.SEPARATOR + prevRuleId
     val inverseKey = prevRuleId + Constants.SEPARATOR + currentRuleId
     ruleRelationshipMap.exists(_._1 == key) || ruleRelationshipMap.exists(_._1 == inverseKey)
