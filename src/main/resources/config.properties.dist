@@ -4,3 +4,6 @@ mongo.isDebugMode=false
 
 redis.hostName=redis-hostname
 redis.portNumber=redis-port
+
+app.host=app-hostname
+app.port=app.port
