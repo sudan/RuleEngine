@@ -1,38 +1,60 @@
 package com.promotion.rule_engine.controller
 
-import akka.actor.Actor
-import spray.routing.{HttpService, RequestContext}
+import com.promotion.rule_engine.service.impl.RuleServiceImpl
+import play.api.libs.json.Json
+import spray.http.{StatusCodes, MediaTypes}
+import spray.routing.HttpService
 
 /**
  * Created by sudan on 14/05/16.
  */
 trait RuleController extends HttpService {
 
+  val ruleService = new RuleServiceImpl
   val createRuleRoute =
-    path("rules") {
-      post {
-          complete("Rule Create")
+    post {
+      path("rules") {
+        entity(as[String]) { jsonStr =>
+          val json = Json.parse(jsonStr)
+          complete(ruleService.createRule(json))
+        }
       }
     }
 
   val getRuleRoute =
-    path("rules") {
-      get {
-          complete("Rule Get")
+    get {
+      path("rules"/ Segment) { ruleId: String =>
+        ruleService.getRule(ruleId) match {
+          case Left(e) => complete("Invalid ruleId " + ruleId)
+          case Right(json) =>
+            respondWithMediaType(MediaTypes.`application/json`) {
+              complete(Json.stringify(json))
+            }
+        }
       }
     }
 
   val updateRuleRoute =
-    path("rules") {
-      put {
-          complete("Rule Update")
+    put {
+      path("rules") {
+        entity(as[String]) { jsonStr =>
+          val json = Json.parse(jsonStr)
+          ruleService.updateRule(json) match {
+            case Left(e) => complete("Invalid payload " + jsonStr)
+            case Right(json) =>
+              respondWithMediaType(MediaTypes.`application/json`) {
+                complete(Json.stringify(json))
+              }
+          }
+        }
       }
     }
 
   val deleteRuleRoute =
-    path("rules") {
-      delete {
-          complete("Rule Delete")
+    delete {
+      path("rules"/ Segment) { ruleId: String =>
+        ruleService.deleteRule(ruleId)
+        complete(StatusCodes.NoContent)
       }
     }
 }

@@ -16,13 +16,13 @@ object RuleConverter {
     val format = DateTimeFormat.forPattern(Constants.DISPLAY_FORMAT)
     implicit val ruleWriter = new Writes[Rule] {
       def writes(rule: Rule) = Json.obj(
-        Constants.RULE_ID -> rule.id,
+        Constants.ID -> rule.id,
         Constants.RULE_NAME -> rule.name,
         Constants.RULE_DESCRIPTION -> rule.description,
         Constants.RULE_CREATED_ON -> format.print(rule.createdOn),
         Constants.RULE_MODIFIED_AT -> format.print(rule.modifiedAt),
         Constants.RULE_OWNER -> rule.owner,
-        Constants.RULE_BOOST -> rule.owner,
+        Constants.RULE_BOOST -> rule.boost.asInstanceOf[Int],
         Constants.RULE_VERSION -> rule.version,
         Constants.DISCOUNT -> rule.discount,
         Constants.RULE_IS_ACTIVE -> rule.isActive,
