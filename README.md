@@ -87,7 +87,7 @@ Property = p (rule ids returned for properties)
 if not rule_ids:
   rule_ids1 = check for region global (country -> state -> city -> area -> pincode) : order of priority
   rule_ids2 = check for category global (main_category -> sub_category -> vertical -> product_id) : order of priority
-  rule_ids = rule_ids + rule_ids2
+  rule_ids = rule_ids1 + rule_ids2
 ```
 
 If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
