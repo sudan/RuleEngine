@@ -27,10 +27,7 @@ class DiscountServiceImpl extends DiscountService {
     } else {
       ruleIds = regionRuleIds.intersect(categoryRuleIds)
     }
-
-    if (!propertyRuleIds.isEmpty) {
-      ruleIds = ruleIds.intersect(propertyRuleIds)
-    }
+    ruleIds = ruleIds.intersect(propertyRuleIds)
 
     var discount = 0.0
     var prevBoost = Constants.SENTINEL_BOOST
