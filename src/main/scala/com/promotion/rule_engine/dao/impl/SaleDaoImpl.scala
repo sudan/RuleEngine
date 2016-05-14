@@ -59,16 +59,42 @@ class SaleDaoImpl extends SaleDao {
 
       for (rule <- rules) {
         val ruleId = rule.id
-        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.states.foreach(v => client.sadd(Constants.STATE + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.areas.foreach(v => client.sadd(Constants.AREA + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
+        val global = Constants.GLOBAL + Constants.SEPARATOR
 
-        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+        val countries = rule.regionList.countries
+        val states = rule.regionList.states
+        val cities = rule.regionList.cities
+        val areas = rule.regionList.areas
+        val pincodes = rule.regionList.pincodes
+
+        val mainCategories = rule.categoryList.mainCategories
+        val subCategories = rule.categoryList.subCategories
+        val verticals = rule.categoryList.verticals
+        val productIds = rule.categoryList.productIds
+
+        countries.foreach(v => client.sadd(Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
+        states.foreach(v => client.sadd(Constants.STATE + Constants.SEPARATOR + v, ruleId))
+        cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v, ruleId))
+        areas.foreach(v => client.sadd(Constants.AREA + Constants.SEPARATOR + v, ruleId))
+        pincodes.foreach(v => client.sadd(Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
+
+        mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        verticals.foreach(v => client.sadd(Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
+        productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+
+        if (rule.isRegionEmpty) {
+          mainCategories.foreach(v => client.sadd(global + Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
+          subCategories.foreach(v => client.sadd(global + Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
+          verticals.foreach(v => client.sadd(global + Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
+          productIds.foreach(v => client.sadd(global + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+        } else if (rule.isCategoryEmpty) {
+          countries.foreach(v => client.sadd(global + Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
+          states.foreach(v => client.sadd(global + Constants.STATE + Constants.SEPARATOR + v, ruleId))
+          cities.foreach(v => client.sadd(global + Constants.CITY + Constants.SEPARATOR + v, ruleId))
+          areas.foreach(v => client.sadd(global + Constants.AREA + Constants.SEPARATOR + v, ruleId))
+          pincodes.foreach(v => client.sadd(global + Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
+        }
 
         for ((key, valueList) <- rule.properties) {
           for (value <- valueList) {

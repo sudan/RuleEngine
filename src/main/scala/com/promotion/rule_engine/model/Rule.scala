@@ -16,5 +16,16 @@ case class Rule(
                  regionList: RegionList,
                  categoryList: CategoryList,
                  isActive: Boolean
-                 )
+                 ) {
+
+  def isRegionEmpty = {
+    regionList.countries.isEmpty && regionList.states.isEmpty && regionList.cities.isEmpty &&
+    regionList.areas.isEmpty && regionList.pincodes.isEmpty
+  }
+
+  def isCategoryEmpty = {
+    categoryList.mainCategories.isEmpty && categoryList.subCategories.isEmpty &&
+    categoryList.verticals.isEmpty && categoryList.productIds.isEmpty
+  }
+}
 
