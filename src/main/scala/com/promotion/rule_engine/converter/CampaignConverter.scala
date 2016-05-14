@@ -19,6 +19,7 @@ object CampaignConverter {
     val format = DateTimeFormat.forPattern(Constants.DISPLAY_FORMAT)
     implicit val campaignWriter = new Writes[Campaign] {
       def writes(campaign: Campaign) = Json.obj(
+        Constants.ID -> campaign.id,
         Constants.CAMPAIGN_RULE_IDS -> Json.toJsFieldJsValueWrapper(campaign.ruleIds),
         Constants.CAMPAIGN_START_DATE -> format.print(campaign.startDate),
         Constants.CAMPAIGN_END_DATE -> format.print(campaign.endDate),
