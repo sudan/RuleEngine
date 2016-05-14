@@ -17,11 +17,17 @@ class DiscountServiceImpl extends DiscountService {
   val ruleDao = new RuleDaoImpl
 
   def getDiscount(json: JsValue): Double = {
-    var regionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json))
-    val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json))
-    val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json))
+    val regionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json), false)
+    val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json), false)
+    val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json), false)
 
-    val ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+    var ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+    if (ruleIds.isEmpty) {
+      val gbRegionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json), true)
+      val gbCategoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json), true)
+      val gbPropertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json), true)
+      ruleIds = gbRegionRuleIds.union(gbCategoryRuleIds).union(gbPropertyRuleIds)
+    }
 
     var discount = 0.0
     var prevBoost = Constants.SENTINEL_BOOST

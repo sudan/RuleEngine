@@ -14,19 +14,19 @@ trait DiscountDao {
    * @param region
    * @return
    */
-  def getRuleIds(region: Region): Set[String]
+  def getRuleIds(region: Region, isGlobal: Boolean): Set[String]
 
   /**
    * Get ruleIds for the category
    * @param category
    * @return
    */
-  def getRuleIds(category: Category): Set[String]
+  def getRuleIds(category: Category, isGlobal: Boolean): Set[String]
 
   /**
    * Get ruleIds for properties
    * @param properties
    * @return
    */
-  def getRuleIds(properties: Map[String, String]): Set[String]
+  def getRuleIds(properties: Map[String, String], isGlobal: Boolean): Set[String]
 }

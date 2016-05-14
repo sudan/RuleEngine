@@ -15,47 +15,56 @@ class DiscountDaoImpl extends DiscountDao {
 
   var redisClient = RedisClient.getConnection
 
-  def getRuleIds(region: Region): Set[String] = {
-    var rules = getRuleIds(Constants.PINCODE, region.pincode)
+  def getRuleIds(region: Region, isGlobal: Boolean): Set[String] = {
+    var prefix = ""
+    if (isGlobal) {
+      prefix = Constants.GLOBAL + Constants.SEPARATOR
+    }
+    var rules = getRuleIds(prefix + Constants.PINCODE, region.pincode)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.AREA, region.area)
+    rules = getRuleIds(prefix + Constants.AREA, region.area)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.CITY, region.city)
+    rules = getRuleIds(prefix + Constants.CITY, region.city)
     if (rules.size > 0) {
       return rules
     }
 
-    rules = getRuleIds(Constants.STATE, region.state)
+    rules = getRuleIds(prefix + Constants.STATE, region.state)
     if (rules.size > 0) {
       return rules
     }
 
-    rules = getRuleIds(Constants.COUNTRY, region.country)
+    rules = getRuleIds(prefix + Constants.COUNTRY, region.country)
     if (rules.size > 0) {
       return rules
     }
     Set.empty[String]
   }
 
-  def getRuleIds(category: Category): Set[String] = {
-    var rules = getRuleIds(Constants.PRODUCT_ID, category.productId)
+  def getRuleIds(category: Category, isGlobal: Boolean): Set[String] = {
+    var prefix = ""
+    if (isGlobal) {
+      prefix = Constants.GLOBAL + Constants.SEPARATOR
+    }
+
+    var rules = getRuleIds(prefix + Constants.PRODUCT_ID, category.productId)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.VERTICAL, category.vertical)
+    rules = getRuleIds(prefix + Constants.VERTICAL, category.vertical)
     if (rules.size > 0) {
       return rules
     }
-    rules = getRuleIds(Constants.SUB_CATEGORY, category.subCategory)
+    rules = getRuleIds(prefix + Constants.SUB_CATEGORY, category.subCategory)
     if (rules.size > 0) {
       return rules
     }
 
-    rules = getRuleIds(Constants.MAIN_CATEGORY, category.mainCategory)
+    rules = getRuleIds(prefix + Constants.MAIN_CATEGORY, category.mainCategory)
     if (rules.size > 0) {
       return rules
     }
@@ -63,11 +72,15 @@ class DiscountDaoImpl extends DiscountDao {
     Set.empty[String]
   }
 
-  def getRuleIds(properties: Map[String, String]): Set[String] = {
+  def getRuleIds(properties: Map[String, String], isGlobal: Boolean): Set[String] = {
 
+    var prefix = ""
+    if (isGlobal) {
+      prefix = Constants.GLOBAL + Constants.SEPARATOR
+    }
     val rules = Set.empty[String]
     for ((key, value) <- properties) {
-      val propertyRule = getRuleIds(key, value)
+      val propertyRule = getRuleIds(prefix + key, value)
       if (propertyRule.size > 0) {
         rules ++= propertyRule
       }
