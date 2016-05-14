@@ -1,12 +1,10 @@
 package com.promotion.rule_engine.converter
 
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.model.{RuleRelationship, Campaign}
+import com.promotion.rule_engine.model.Campaign
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import play.api.libs.json._
-
-import scala.collection.mutable.ArrayBuffer
 
 
 /**

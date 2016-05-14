@@ -2,13 +2,13 @@ package com.promotion.rule_engine.controller
 
 import com.promotion.rule_engine.service.impl.SaleServiceImpl
 import play.api.libs.json.Json
-import spray.http.{StatusCodes, MediaTypes}
+import spray.http.{MediaTypes, StatusCodes}
 import spray.routing.HttpService
 
 /**
  * Created by sudan on 14/05/16.
  */
-trait SaleController extends HttpService{
+trait SaleController extends HttpService {
 
   val saleService = new SaleServiceImpl
 
@@ -24,7 +24,7 @@ trait SaleController extends HttpService{
 
   val getSaleRoute =
     get {
-      path("sales"/ Segment) { saleId: String =>
+      path("sales" / Segment) { saleId: String =>
         saleService.getSale(saleId) match {
           case Left(e) => complete("Invalid saleId " + saleId)
           case Right(json) =>
@@ -53,7 +53,7 @@ trait SaleController extends HttpService{
 
   val deleteSaleRoute =
     delete {
-      path("sales"/ Segment) { saleId: String =>
+      path("sales" / Segment) { saleId: String =>
         saleService.deleteSale(saleId)
         complete(StatusCodes.NoContent)
       }

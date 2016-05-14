@@ -1,12 +1,13 @@
 package com.promotion.rule_engine
 
-import akka.actor.{Props, ActorSystem}
+import akka.actor.{ActorSystem, Props}
 import akka.io.IO
+import akka.pattern.ask
 import akka.util.Timeout
 import com.promotion.rule_engine.bootstrap.ConfigManager
 import com.promotion.rule_engine.controller.RoutesActor
-import akka.pattern.ask
 import spray.can.Http
+
 import scala.concurrent.duration._
 
 

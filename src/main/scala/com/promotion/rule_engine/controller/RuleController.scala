@@ -2,7 +2,7 @@ package com.promotion.rule_engine.controller
 
 import com.promotion.rule_engine.service.impl.RuleServiceImpl
 import play.api.libs.json.Json
-import spray.http.{StatusCodes, MediaTypes}
+import spray.http.{MediaTypes, StatusCodes}
 import spray.routing.HttpService
 
 /**
@@ -23,7 +23,7 @@ trait RuleController extends HttpService {
 
   val getRuleRoute =
     get {
-      path("rules"/ Segment) { ruleId: String =>
+      path("rules" / Segment) { ruleId: String =>
         ruleService.getRule(ruleId) match {
           case Left(e) => complete("Invalid ruleId " + ruleId)
           case Right(json) =>
@@ -52,7 +52,7 @@ trait RuleController extends HttpService {
 
   val deleteRuleRoute =
     delete {
-      path("rules"/ Segment) { ruleId: String =>
+      path("rules" / Segment) { ruleId: String =>
         ruleService.deleteRule(ruleId)
         complete(StatusCodes.NoContent)
       }

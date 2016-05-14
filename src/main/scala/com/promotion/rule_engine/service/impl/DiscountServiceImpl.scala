@@ -6,8 +6,6 @@ import com.promotion.rule_engine.dao.impl.{DiscountDaoImpl, RuleDaoImpl}
 import com.promotion.rule_engine.service.api.DiscountService
 import play.api.libs.json.JsValue
 
-import scala.collection.mutable.Set
-
 /**
  * Created by sudan on 24/04/16.
  */

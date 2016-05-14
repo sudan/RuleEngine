@@ -7,7 +7,7 @@ import spray.routing.HttpService
 /**
  * Created by sudan on 14/05/16.
  */
-trait DiscountController extends HttpService{
+trait DiscountController extends HttpService {
 
   val discountService = new DiscountServiceImpl
 

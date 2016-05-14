@@ -7,7 +7,7 @@ import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
 import com.promotion.rule_engine.mapper.SaleMapper
-import com.promotion.rule_engine.model.{RuleRelationship, Rule, Sale}
+import com.promotion.rule_engine.model.{Rule, RuleRelationship, Sale}
 
 /**
  * Created by sudan on 09/04/16.

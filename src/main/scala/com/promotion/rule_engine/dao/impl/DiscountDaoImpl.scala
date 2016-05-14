@@ -4,9 +4,8 @@ import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.bootstrap.RedisClient
 import com.promotion.rule_engine.dao.api.DiscountDao
 import com.promotion.rule_engine.model.{Category, Region}
-import scala.collection.mutable.Set
 
-import scala.collection.mutable.SortedSet
+import scala.collection.mutable.Set
 
 /**
  * Created by sudan on 24/04/16.
@@ -72,6 +71,13 @@ class DiscountDaoImpl extends DiscountDao {
     Set.empty[String]
   }
 
+  private[this] def getRuleIds(prefix: String, suffix: String): Set[String] = {
+    val rules = Set[String]()
+    var ruleSet = redisClient.smembers(prefix + Constants.SEPARATOR + suffix).get
+    ruleSet.map(ruleIds => rules += ruleIds.get)
+    rules
+  }
+
   def getRuleIds(properties: Map[String, String], isGlobal: Boolean): Set[String] = {
 
     var prefix = ""
@@ -85,13 +91,6 @@ class DiscountDaoImpl extends DiscountDao {
         rules ++= propertyRule
       }
     }
-    rules
-  }
-
-  private[this] def getRuleIds(prefix: String, suffix: String): Set[String] = {
-    val rules = Set[String]()
-    var ruleSet = redisClient.smembers(prefix + Constants.SEPARATOR + suffix).get
-    ruleSet.map(ruleIds => rules += ruleIds.get)
     rules
   }
 }

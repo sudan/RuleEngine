@@ -1,9 +1,9 @@
 package com.promotion.rule_engine.converter
 
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.model.{Category, Region}
-import play.api.libs.json.{Json, JsPath, Reads, JsValue}
+import com.promotion.rule_engine.model.Category
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 
 
 /**
