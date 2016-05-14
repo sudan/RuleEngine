@@ -78,6 +78,7 @@ Rules can be defined on
 
 Given a product with information on buyer's region and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties and apply the following conditions to fetch ruleIds
 
+```bash
 Region = r (rule ids returned for region based on order of priority)
 Category = c (rule ids returned for category based on order of priority)
 Property = p (rule ids returned for properties)
@@ -93,6 +94,7 @@ else if r and c:
       retain rule_ids
     else:
       rule_ids = []
+```
 
 If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
 
