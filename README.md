@@ -22,7 +22,7 @@ Sample Rule Schema
   "id": "<rule id>", // Generated for creation and can be used for updation,
   "name": "<rule name>",
   "description": "<rule description>",
-  "version": "<rule version>", // old rules are audited
+  "version": "<rule version>",
   "owner": "<rule owner>", // a string field which denotes the owner who created this
   "discount": "<rule discount>", // a double value which denotes discount
   "boost": "<rule boost>", // an integer which is used to decide preference when two rules collide,
@@ -91,8 +91,6 @@ if not rule_ids:
 ```
 
 If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
-
-There is a audit service maintained to track rule,campaign and sale changes
 
 Persistent information is stored in mongodb and once the sale is started, it flushes redis and builds rules with discounting information in queryable format for faster response in redis (FYI : This is a one time process which takes time since it fetches all campaigns, rules from mongodb and populates redis). Post that all reads of discount calculation happens from redis
 
