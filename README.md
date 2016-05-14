@@ -87,7 +87,7 @@ if r and c and p:
   rule_ids = r intersect c intersect p
 else if r and c:
   rule_ids = r intersect c
-  if any rule_id in rule_ids global and matches with input region or category?
+  if any rule_id in rule_ids global and matches with input region or category (order of priority starts the opposite direction)?
     retain rule_ids
   else:
     if properties from input is empty:
