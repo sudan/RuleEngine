@@ -75,7 +75,25 @@ Rules can be defined on
 2. Category - Which includes main categories, sub categories, verticals and product ids. Order of priority is bottom up where product ids are given the most priority and main categories given the least to narrow down
 3. List of properties where each is a key to list of values
 
-Given a product with information on buyer's region and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties. and finds a intersection of all rule ids from the above three matches (only non empty sets are used). If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
+Given a product with information on buyer's region and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties and apply the following conditions to fetch ruleIds
+
+Region = r (rule ids returned for region based on order of priority)
+Category = c (rule ids returned for category based on order of priority)
+Property = p (rule ids returned for properties)
+
+if r and c and p:
+  rule_ids = r intersect c intersect p
+else if r and c:
+  rule_ids = r intersect c
+  if any rule_id in rule_ids global and matches with input region or category?
+    retain rule_ids
+  else:
+    if properties from input is empty:
+      retain rule_ids
+    else:
+      rule_ids = []
+
+If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
 
 There is a audit service maintained to track rule,campaign and sale changes
 
