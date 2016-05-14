@@ -5,8 +5,9 @@ A generalized promotion rule engine for products which allows to define rules fo
 # Technologies used
 
 1. Scala
-2. MongoDB(Casbah)
-3. Redis
+2. Spray (For REST APIs)
+3. MongoDB(Casbah)
+4. Redis
 
 # Overview
 
