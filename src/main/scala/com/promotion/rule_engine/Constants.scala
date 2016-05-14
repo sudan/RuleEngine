@@ -83,4 +83,5 @@ object Constants {
   val RULE_RELATIONSHIP = "relationships"
 
   val OP_AND = "and"
+  val GLOBAL = "gb"
 }

@@ -21,13 +21,7 @@ class DiscountServiceImpl extends DiscountService {
     val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json))
     val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json))
 
-    var ruleIds = Set.empty[String]
-    if (regionRuleIds.isEmpty) {
-      ruleIds = categoryRuleIds
-    } else {
-      ruleIds = regionRuleIds.intersect(categoryRuleIds)
-    }
-    ruleIds = ruleIds.intersect(propertyRuleIds)
+    val ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
 
     var discount = 0.0
     var prevBoost = Constants.SENTINEL_BOOST
