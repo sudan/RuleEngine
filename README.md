@@ -83,17 +83,11 @@ Region = r (rule ids returned for region based on order of priority)
 Category = c (rule ids returned for category based on order of priority)
 Property = p (rule ids returned for properties)
 
-if r and c and p:
   rule_ids = r intersect c intersect p
-else if r and c:
-  rule_ids = r intersect c
-  if any rule_id in rule_ids global and matches with input region or category (order of priority starts the opposite direction)?
-    retain rule_ids
-  else:
-    if properties from input is empty:
-      retain rule_ids
-    else:
-      rule_ids = []
+if not rule_ids:
+  rule_ids1 = check for region global (country -> state -> city -> area -> pincode) : order of priority
+  rule_ids2 = check for category global (main_category -> sub_category -> vertical -> product_id) : order of priority
+  rule_ids = rule_ids + rule_ids2
 ```
 
 If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
