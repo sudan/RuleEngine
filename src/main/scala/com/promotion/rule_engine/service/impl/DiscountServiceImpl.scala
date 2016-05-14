@@ -22,8 +22,8 @@ class DiscountServiceImpl extends DiscountService {
     val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json))
 
     var ruleIds = Set.empty[String]
-    if (regionRuleIds.isEmpty || categoryRuleIds.isEmpty) {
-      ruleIds = regionRuleIds.union(categoryRuleIds)
+    if (regionRuleIds.isEmpty) {
+      ruleIds = categoryRuleIds
     } else {
       ruleIds = regionRuleIds.intersect(categoryRuleIds)
     }
@@ -39,7 +39,6 @@ class DiscountServiceImpl extends DiscountService {
 
     for (ruleId <- ruleIds) {
       val discountAttrs = ruleDao.getDiscountedAttrs(ruleId)
-
       if (prevRuleId == Constants.SENTINEL_ID) {
         discount = discountAttrs(Constants.DISCOUNT).toDouble
         var currentBoost = discountAttrs(Constants.RULE_BOOST).toInt

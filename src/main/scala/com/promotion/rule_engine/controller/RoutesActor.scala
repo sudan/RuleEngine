@@ -11,7 +11,7 @@ class RoutesActor extends Actor with Routes {
   def receive = runRoute(routes)
 }
 
-trait Routes extends RuleController with CampaignController with SaleController{
+trait Routes extends RuleController with CampaignController with SaleController with DiscountController{
   val routes = {
     createRuleRoute ~
     getRuleRoute ~
@@ -25,6 +25,7 @@ trait Routes extends RuleController with CampaignController with SaleController{
     getSaleRoute ~
     updateSaleRoute ~
     deleteSaleRoute ~
-    startSaleRoute
+    startSaleRoute ~
+    getDiscountRoute
   }
 }
