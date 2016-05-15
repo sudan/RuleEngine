@@ -59,7 +59,6 @@ class SaleDaoImpl extends SaleDao {
 
       for (rule <- rules) {
         val ruleId = rule.id
-        val global = Constants.GLOBAL + Constants.SEPARATOR
 
         val countries = rule.regionList.countries
         val states = rule.regionList.states
@@ -72,50 +71,31 @@ class SaleDaoImpl extends SaleDao {
         val verticals = rule.categoryList.verticals
         val productIds = rule.categoryList.productIds
 
-        if (rule.isRegionEmpty) {
-          if (!productIds.isEmpty) {
-            productIds.foreach(v => client.sadd(global + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
-          } else if (!verticals.isEmpty) {
-            verticals.foreach(v => client.sadd(global + Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
-          } else if (!subCategories.isEmpty) {
-            subCategories.foreach(v => client.sadd(global + Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
-          } else if (!mainCategories.isEmpty) {
-            mainCategories.foreach(v => client.sadd(global + Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
-          }
-        } else if (rule.isCategoryEmpty) {
-          if (!pincodes.isEmpty) {
-            pincodes.foreach(v => client.sadd(global + Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
-          } else if (!areas.isEmpty) {
-            areas.foreach(v => client.sadd(global + Constants.AREA + Constants.SEPARATOR + v, ruleId))
-          } else if (!cities.isEmpty) {
-            cities.foreach(v => client.sadd(global + Constants.CITY + Constants.SEPARATOR + v, ruleId))
-          } else if (!states.isEmpty) {
-            states.foreach(v => client.sadd(global + Constants.STATE + Constants.SEPARATOR + v, ruleId))
-          } else if (!countries.isEmpty) {
-            countries.foreach(v => client.sadd(global + Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
-          }
-        } else {
-          if (!productIds.isEmpty) {
-            productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
-          } else if (!verticals.isEmpty) {
-            verticals.foreach(v => client.sadd(Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
-          } else if (!subCategories.isEmpty) {
-            subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
-          } else if (!mainCategories.isEmpty) {
-            mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
-          }
+        var prefix = ""
+        if (rule.isRegionEmpty || rule.isCategoryEmpty) {
+          prefix = Constants.GLOBAL + Constants.SEPARATOR
+        }
 
-          if (!pincodes.isEmpty) {
-            pincodes.foreach(v => client.sadd(Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
-          } else if (!areas.isEmpty) {
-            areas.foreach(v => client.sadd(Constants.AREA + Constants.SEPARATOR + v, ruleId))
-          } else if (!cities.isEmpty) {
-            cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v, ruleId))
-          } else if (!states.isEmpty) {
-            states.foreach(v => client.sadd(Constants.STATE + Constants.SEPARATOR + v, ruleId))
-          } else if (!countries.isEmpty) {
-            countries.foreach(v => client.sadd(Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
-          }
+        if (!productIds.isEmpty) {
+          productIds.foreach(v => client.sadd(prefix + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+        } else if (!verticals.isEmpty) {
+          verticals.foreach(v => client.sadd(prefix + Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
+        } else if (!subCategories.isEmpty) {
+          subCategories.foreach(v => client.sadd(prefix + Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        } else if (!mainCategories.isEmpty) {
+          mainCategories.foreach(v => client.sadd(prefix + Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        }
+
+        if (!pincodes.isEmpty) {
+          pincodes.foreach(v => client.sadd(prefix + Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
+        } else if (!areas.isEmpty) {
+          areas.foreach(v => client.sadd(prefix + Constants.AREA + Constants.SEPARATOR + v, ruleId))
+        } else if (!cities.isEmpty) {
+          cities.foreach(v => client.sadd(prefix + Constants.CITY + Constants.SEPARATOR + v, ruleId))
+        } else if (!states.isEmpty) {
+          states.foreach(v => client.sadd(prefix + Constants.STATE + Constants.SEPARATOR + v, ruleId))
+        } else if (!countries.isEmpty) {
+          countries.foreach(v => client.sadd(prefix + Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
         }
 
         for ((key, valueList) <- rule.properties) {
