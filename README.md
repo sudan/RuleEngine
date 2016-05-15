@@ -9,6 +9,13 @@ An engine which allows to define rules on product dimensions such as category/re
 3. MongoDB(Casbah)
 4. Redis
 
+# Setup and Examples
+
+```bash
+Head over to the link for setup and sample examples
+https://github.com/sudan/RuleEngine/wiki
+```
+
 # Overview
 
 Basic idea behind building this rule engine is to create a minimal module to define rules for ecommerce products over dimensions such as region, category and product specific properties which are used as a criteria to calculate discounts.
