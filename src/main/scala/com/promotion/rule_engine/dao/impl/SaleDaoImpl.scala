@@ -77,7 +77,7 @@ class SaleDaoImpl extends SaleDao {
         }
 
         if (!productIds.isEmpty) {
-          productIds.foreach(v => client.sadd(prefix + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+          productIds.foreach(v => client.sadd(Constants.GLOBAL + Constants.SEPARATOR + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
           productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
         } else if (!verticals.isEmpty) {
           verticals.foreach(v => client.sadd(prefix + Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))

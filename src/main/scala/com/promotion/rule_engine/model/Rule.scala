@@ -21,7 +21,7 @@ case class Rule(
 
   def isGlobal = {
     (isRegionEmpty && isPropertiesEmpty) || (isCategoryEmpty && isPropertiesEmpty) ||
-      (isRegionEmpty && isCategoryEmpty) || (!categoryList.productIds.isEmpty)
+      (isRegionEmpty && isCategoryEmpty)
   }
   def isRegionEmpty = {
     regionList.countries.isEmpty && regionList.states.isEmpty && regionList.cities.isEmpty &&
