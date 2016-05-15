@@ -99,3 +99,4 @@ Persistent information is stored in mongodb and once the sale is started, it flu
 1. This module doesnt serve as a caching engine of discounts for given input. It is upto to the caller to cache information of discount against product id
 2. Edits requires re building redis information and can be a bit time consuming. So this project is not meant for real time edits but its  meant for real time calculation of discounts
 3. Collision of names not handled. Ideal way would be each of category and region should be represented by a unique integer while creating rules.
+4. Order of priority in a category/region always takes priority over composition of rules. Composition works on different dimensions and not on same dimensions
