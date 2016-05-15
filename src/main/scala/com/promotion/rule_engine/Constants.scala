@@ -84,4 +84,6 @@ object Constants {
 
   val OP_AND = "and"
   val GLOBAL = "gb"
+
+  val RULE_EXPIRY = "rule_expiry"
 }

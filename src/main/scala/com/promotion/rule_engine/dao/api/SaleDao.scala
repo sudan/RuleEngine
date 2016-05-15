@@ -1,6 +1,6 @@
 package com.promotion.rule_engine.dao.api
 
-import com.promotion.rule_engine.model.{Rule, RuleRelationship, Sale}
+import com.promotion.rule_engine.model.{RuleExpiry, Rule, RuleRelationship, Sale}
 
 /**
  * Created by sudan on 10/04/16.
@@ -38,5 +38,5 @@ trait SaleDao {
    * Apply rules by storing discount related information in retrieval form
    * @param rules
    */
-  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship]): Unit
+  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship], ruleExpiries: Array[RuleExpiry]): Unit
 }
