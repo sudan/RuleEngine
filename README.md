@@ -85,8 +85,8 @@ Property = p (rule ids returned for properties)
 
   rule_ids = r intersect c intersect p
   if not rule_ids:
-    rule_ids1 = check for region global (country -> state -> city -> area -> pincode) : order of priority
-    rule_ids2 = check for category global (main_category -> sub_category -> vertical -> product_id) : order of priority
+    rule_ids1 = check for region global (pincode -> area -> city -> state -> country ) : order of priority
+    rule_ids2 = check for category global (product_id -> vertical -> sub_category -> main_category) : order of priority
     rule_ids3 = check for property global
     rule_ids = rule_ids1 + rule_ids2 + rule_ids3
 ```
