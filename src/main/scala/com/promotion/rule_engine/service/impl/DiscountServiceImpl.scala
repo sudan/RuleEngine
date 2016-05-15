@@ -36,6 +36,7 @@ class DiscountServiceImpl extends DiscountService {
       ruleIds = gbRegionRuleIds.union(gbCategoryRuleIds).union(gbPropertyRuleIds)
     }
 
+    ruleIds = discountDao.filterActiveRuleIds(ruleIds)
     var discount = 0.0
     var prevBoost = Constants.SENTINEL_BOOST
     var prevRuleId = Constants.SENTINEL_ID
