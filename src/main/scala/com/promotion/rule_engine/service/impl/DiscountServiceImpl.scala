@@ -24,10 +24,8 @@ class DiscountServiceImpl extends DiscountService {
     val categoryRuleIds = discountDao.getRuleIds(category, false)
     val propertyRuleIds = discountDao.getRuleIds(properties, false)
 
-    var ruleIds = regionRuleIds.intersect(categoryRuleIds)
-    if (!properties.isEmpty) {
-      ruleIds = ruleIds.intersect(propertyRuleIds)
-    }
+    var ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+
     if (ruleIds.isEmpty) {
       val gbRegionRuleIds = discountDao.getRuleIds(region, true)
       val gbCategoryRuleIds = discountDao.getRuleIds(category,  true)
