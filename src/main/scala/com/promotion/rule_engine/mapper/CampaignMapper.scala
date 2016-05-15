@@ -1,8 +1,8 @@
 package com.promotion.rule_engine.mapper
 
-import com.mongodb.{BasicDBObject, BasicDBList, DBObject}
+import com.mongodb.{BasicDBList, BasicDBObject, DBObject}
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.model.{RuleRelationship, Campaign}
+import com.promotion.rule_engine.model.{Campaign, RuleRelationship}
 
 import scala.collection.mutable.ArrayBuffer
 

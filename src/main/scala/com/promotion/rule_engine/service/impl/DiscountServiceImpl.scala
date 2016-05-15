@@ -6,8 +6,6 @@ import com.promotion.rule_engine.dao.impl.{DiscountDaoImpl, RuleDaoImpl}
 import com.promotion.rule_engine.service.api.DiscountService
 import play.api.libs.json.JsValue
 
-import scala.collection.mutable.Set
-
 /**
  * Created by sudan on 24/04/16.
  */
@@ -17,11 +15,26 @@ class DiscountServiceImpl extends DiscountService {
   val ruleDao = new RuleDaoImpl
 
   def getDiscount(json: JsValue): Double = {
-    var regionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json))
-    val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json))
-    val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json))
 
-    val ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+    val region = RegionConverter.fromJson(json)
+    val category = CategoryConverter.fromJson(json)
+    val properties = ProductAttributeConverter.fromJson(json)
+
+    val regionRuleIds = discountDao.getRuleIds(region, false)
+    val categoryRuleIds = discountDao.getRuleIds(category, false)
+    val propertyRuleIds = discountDao.getRuleIds(properties, false)
+
+    var ruleIds = regionRuleIds.intersect(categoryRuleIds)
+    if (!properties.isEmpty) {
+      ruleIds = ruleIds.intersect(propertyRuleIds)
+    }
+
+    if (ruleIds.isEmpty) {
+      val gbRegionRuleIds = discountDao.getRuleIds(region, true)
+      val gbCategoryRuleIds = discountDao.getRuleIds(category, true)
+      val gbPropertyRuleIds = discountDao.getRuleIds(properties, true)
+      ruleIds = gbRegionRuleIds.union(gbCategoryRuleIds).union(gbPropertyRuleIds)
+    }
 
     var discount = 0.0
     var prevBoost = Constants.SENTINEL_BOOST

@@ -2,7 +2,7 @@ package com.promotion.rule_engine.dao.impl
 
 import com.mongodb.casbah.commons.MongoDBObject
 import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.bootstrap.{RedisClient, MongoClient}
+import com.promotion.rule_engine.bootstrap.{MongoClient, RedisClient}
 import com.promotion.rule_engine.builder.RuleBuilder
 import com.promotion.rule_engine.dao.api.RuleDao
 import com.promotion.rule_engine.generator.IdGenerator

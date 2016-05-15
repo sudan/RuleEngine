@@ -7,7 +7,7 @@ import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
 import com.promotion.rule_engine.mapper.SaleMapper
-import com.promotion.rule_engine.model.{RuleRelationship, Rule, Sale}
+import com.promotion.rule_engine.model.{Rule, RuleRelationship, Sale}
 
 /**
  * Created by sudan on 09/04/16.
@@ -59,16 +59,45 @@ class SaleDaoImpl extends SaleDao {
 
       for (rule <- rules) {
         val ruleId = rule.id
-        rule.regionList.countries.foreach(v => client.sadd(Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.states.foreach(v => client.sadd(Constants.STATE + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.cities.foreach(v => client.sadd(Constants.CITY + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.areas.foreach(v => client.sadd(Constants.AREA + Constants.SEPARATOR + v, ruleId))
-        rule.regionList.pincodes.foreach(v => client.sadd(Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
 
-        rule.categoryList.mainCategories.foreach(v => client.sadd(Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.subCategories.foreach(v => client.sadd(Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.verticals.foreach(v => client.sadd(Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
-        rule.categoryList.productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+        val countries = rule.regionList.countries
+        val states = rule.regionList.states
+        val cities = rule.regionList.cities
+        val areas = rule.regionList.areas
+        val pincodes = rule.regionList.pincodes
+
+        val mainCategories = rule.categoryList.mainCategories
+        val subCategories = rule.categoryList.subCategories
+        val verticals = rule.categoryList.verticals
+        val productIds = rule.categoryList.productIds
+
+        var prefix = ""
+        if (rule.isGlobal) {
+          prefix = Constants.GLOBAL + Constants.SEPARATOR
+        }
+
+        if (!productIds.isEmpty) {
+          productIds.foreach(v => client.sadd(Constants.GLOBAL + Constants.SEPARATOR + Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+          productIds.foreach(v => client.sadd(Constants.PRODUCT_ID + Constants.SEPARATOR + v, ruleId))
+        } else if (!verticals.isEmpty) {
+          verticals.foreach(v => client.sadd(prefix + Constants.VERTICAL + Constants.SEPARATOR + v, ruleId))
+        } else if (!subCategories.isEmpty) {
+          subCategories.foreach(v => client.sadd(prefix + Constants.SUB_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        } else if (!mainCategories.isEmpty) {
+          mainCategories.foreach(v => client.sadd(prefix + Constants.MAIN_CATEGORY + Constants.SEPARATOR + v, ruleId))
+        }
+
+        if (!pincodes.isEmpty) {
+          pincodes.foreach(v => client.sadd(prefix + Constants.PINCODE + Constants.SEPARATOR + v, ruleId))
+        } else if (!areas.isEmpty) {
+          areas.foreach(v => client.sadd(prefix + Constants.AREA + Constants.SEPARATOR + v, ruleId))
+        } else if (!cities.isEmpty) {
+          cities.foreach(v => client.sadd(prefix + Constants.CITY + Constants.SEPARATOR + v, ruleId))
+        } else if (!states.isEmpty) {
+          states.foreach(v => client.sadd(prefix + Constants.STATE + Constants.SEPARATOR + v, ruleId))
+        } else if (!countries.isEmpty) {
+          countries.foreach(v => client.sadd(prefix + Constants.COUNTRY + Constants.SEPARATOR + v, ruleId))
+        }
 
         for ((key, valueList) <- rule.properties) {
           for (value <- valueList) {

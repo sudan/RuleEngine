@@ -8,7 +8,7 @@ import spray.routing.HttpService
 /**
  * Created by sudan on 14/05/16.
  */
-trait CampaignController extends HttpService{
+trait CampaignController extends HttpService {
 
   val campaignService = new CampaignServiceImpl
 
@@ -24,7 +24,7 @@ trait CampaignController extends HttpService{
 
   val getCampaignRoute =
     get {
-      path("campaigns"/ Segment) { campaignId: String =>
+      path("campaigns" / Segment) { campaignId: String =>
         campaignService.getCampaign(campaignId) match {
           case Left(e) => complete("Invalid campaignId " + campaignId)
           case Right(json) =>
@@ -53,7 +53,7 @@ trait CampaignController extends HttpService{
 
   val deleteCampaignRoute =
     delete {
-      path("campaigns"/ Segment) { campaignId: String =>
+      path("campaigns" / Segment) { campaignId: String =>
         campaignService.deleteCampaign(campaignId)
         complete(StatusCodes.NoContent)
       }

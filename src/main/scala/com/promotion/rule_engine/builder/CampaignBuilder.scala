@@ -1,7 +1,7 @@
 package com.promotion.rule_engine.builder
 
 import com.mongodb.DBObject
-import com.mongodb.casbah.commons.{MongoDBObject, MongoDBList}
+import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject}
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.model.Campaign
 

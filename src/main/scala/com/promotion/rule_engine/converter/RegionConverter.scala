@@ -2,8 +2,8 @@ package com.promotion.rule_engine.converter
 
 import com.promotion.rule_engine.Constants
 import com.promotion.rule_engine.model.Region
-import play.api.libs.json.{Json, JsPath, Reads, JsValue}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 
 /**
  * Created by sudan on 24/04/16.

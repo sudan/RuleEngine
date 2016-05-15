@@ -1,9 +1,8 @@
 package com.promotion.rule_engine.converter
 
-import com.promotion.rule_engine.Constants
-import com.promotion.rule_engine.model.{RuleRelationship, Region}
+import com.promotion.rule_engine.model.RuleRelationship
 import play.api.libs.json.Json.JsValueWrapper
-import play.api.libs.json.{Json, JsPath, Reads, JsValue}
+import play.api.libs.json.{JsValue, Json}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -16,7 +15,7 @@ object RuleRelationshipConverter {
 
     val ruleRels = ruleRelationships.map(ruleRelationship => ruleRelationship.firstRuleId + " " +
       ruleRelationship.operation + " " + ruleRelationship.secondRuleId)
-      Json.toJsFieldJsValueWrapper(ruleRels)
+    Json.toJsFieldJsValueWrapper(ruleRels)
   }
 
   def fromJson(json: JsValue): Array[RuleRelationship] = {
@@ -24,7 +23,7 @@ object RuleRelationshipConverter {
     val ruleRels = json.as[Array[String]]
     val ruleRelationships = ArrayBuffer[RuleRelationship]()
     for (ruleRel <- ruleRels) {
-      val ruleRelArr =  ruleRel.split(" ")
+      val ruleRelArr = ruleRel.split(" ")
       val firstRuleId = ruleRelArr(0)
       val operation = ruleRelArr(1)
       val secondRuleId = ruleRelArr(2)

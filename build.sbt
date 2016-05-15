@@ -13,7 +13,7 @@ val slf4jVersion = "1.7.12"
 val akkaVersion = "2.3.9"
 val mongodbVersion = "2.7.3"
 val playJsonVersion = "2.3.4"
-val sprayVersion      = "1.3.2"
+val sprayVersion = "1.3.2"
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
