@@ -1,6 +1,6 @@
 # RuleEngine
 
-A generalized promotion rule engine for products which allows to define rules for discounting without requiring a code change
+An engine which allows to define rules on product dimensions such as category/region/properties to calculate discounts without requiring a code change.
 
 # Technologies used
 
@@ -11,7 +11,7 @@ A generalized promotion rule engine for products which allows to define rules fo
 
 # Overview
 
-Basic idea behind building this rule engine is to create a minimal module to define rules for ecommerce products over dimensions such as region, category and product specific properties which is used as a criteria to calculate discounts.
+Basic idea behind building this rule engine is to create a minimal module to define rules for ecommerce products over dimensions such as region, category and product specific properties which are used as a criteria to calculate discounts.
 
 Hierarchy
 
@@ -55,7 +55,10 @@ Campaign Schema
   "id": "<campaign id>", // generated on creation and can be used for updation
   "rule_ids": [<list of rule ids>],
   "start_date": "<campaign start date>",
-  "end_date": "<campaign end date>"
+  "end_date": "<campaign end date>",
+  "relationships": [
+    <rule_id1> AND <rule_id2>
+  ] // To be used across dimensions which combines rules instead of picking one
 }
 ```
 
@@ -72,8 +75,8 @@ By default rules will be in dormant state unless the sale is explictly started.
 
 Rules can be defined on
 
-1. Region - Which includes countries, states, cities, areas and pincodes. Order of priority is bottom up where pincodes are given the most priority and countries given the least to narrow down
-2. Category - Which includes main categories, sub categories, verticals and product ids. Order of priority is bottom up where product ids are given the most priority and main categories given the least to narrow down
+1. Region - Which includes countries, states, cities, areas and pincodes. Order of priority is bottom up where pincodes are given the most priority and countries are given the least to narrow down
+2. Category - Which includes main categories, sub categories, verticals and product ids. Order of priority is bottom up where product ids are given the most priority and main categories are given the least to narrow down
 3. List of properties where each is a key to list of values
 
 Given a product with information on buyer's region and product properties (only relevant ones) and category information, it fetches all rules which match region (based on priority mentioned above), which match category (based on priority mentioned above) and properties and apply the following conditions to fetch ruleIds
@@ -83,11 +86,14 @@ Region = r (rule ids returned for region based on order of priority)
 Category = c (rule ids returned for category based on order of priority)
 Property = p (rule ids returned for properties)
 
-  rule_ids = r intersect c intersect p
-  rule_ids1 = check for region global (pincode -> area -> city -> state -> country ) : order of priority
-  rule_ids2 = check for category global (product_id -> vertical -> sub_category -> main_category) : order of priority
-  rule_ids3 = check for property global
-  rule_ids = rule_ids1 + rule_ids2 + rule_ids3
+  rule_ids = r intersect c
+  if properties.isNotEmpty?
+    rule_ids = rule_ids intersect p
+  if not rule_ids:
+    rule_ids1 = check for region global (pincode -> area -> city -> state -> country ) : order of priority
+    rule_ids2 = check for category global (product_id -> vertical -> sub_category -> main_category) : order of priority
+    rule_ids3 = check for property global
+    rule_ids = rule_ids1 + rule_ids2 + rule_ids3
 ```
 
 If there is a single rule id, discount corresponding to the rule is returned. If there are multiple rules, boost parameter is used to decide which rule's discount takes preference. There is also a provision to combine rules which can be defined at the campaign level 
@@ -96,7 +102,7 @@ Persistent information is stored in mongodb and once the sale is started, it flu
 
 # What is not solved
 
-1. This module doesnt serve as a caching engine of discounts for given input. It is upto to the caller to cache information of discount against product id
-2. Edits requires re building redis information and can be a bit time consuming. So this project is not meant for real time edits but its  meant for real time calculation of discounts
+1. This module doesnt serve as a cache for discounts for given input. ie. calculation is done each time from redis.
+2. Edits requires re-building information stored in redis and can be a bit time consuming. So this module is not meant for real time edits but its  meant for real time calculation of discounts
 3. Collision of names not handled. Ideal way would be each of category and region should be represented by a unique integer while creating rules.
 4. Order of priority in a category/region always takes priority over composition of rules. Composition works on different dimensions and not on same dimensions
