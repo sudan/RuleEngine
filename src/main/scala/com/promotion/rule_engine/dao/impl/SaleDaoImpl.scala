@@ -72,7 +72,7 @@ class SaleDaoImpl extends SaleDao {
         val productIds = rule.categoryList.productIds
 
         var prefix = ""
-        if (rule.isRegionEmpty || rule.isCategoryEmpty || !productIds.isEmpty) {
+        if (rule.isGlobal) {
           prefix = Constants.GLOBAL + Constants.SEPARATOR
         }
 
