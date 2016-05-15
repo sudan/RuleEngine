@@ -5,7 +5,7 @@ import com.promotion.rule_engine.bootstrap.RedisClient
 import com.promotion.rule_engine.dao.api.DiscountDao
 import com.promotion.rule_engine.model.{Category, Region}
 
-import scala.collection.mutable.{ArrayBuffer, Set}
+import scala.collection.mutable.Set
 
 /**
  * Created by sudan on 24/04/16.
