@@ -15,15 +15,23 @@ class DiscountServiceImpl extends DiscountService {
   val ruleDao = new RuleDaoImpl
 
   def getDiscount(json: JsValue): Double = {
-    val regionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json), false)
-    val categoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json), false)
-    val propertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json), false)
 
-    var ruleIds = regionRuleIds.intersect(categoryRuleIds).intersect(propertyRuleIds)
+    val region = RegionConverter.fromJson(json)
+    val category = CategoryConverter.fromJson(json)
+    val properties = ProductAttributeConverter.fromJson(json)
+
+    val regionRuleIds = discountDao.getRuleIds(region, false)
+    val categoryRuleIds = discountDao.getRuleIds(category, false)
+    val propertyRuleIds = discountDao.getRuleIds(properties, false)
+
+    var ruleIds = regionRuleIds.intersect(categoryRuleIds)
+    if (!properties.isEmpty) {
+      ruleIds = ruleIds.intersect(propertyRuleIds)
+    }
     if (ruleIds.isEmpty) {
-      val gbRegionRuleIds = discountDao.getRuleIds(RegionConverter.fromJson(json), true)
-      val gbCategoryRuleIds = discountDao.getRuleIds(CategoryConverter.fromJson(json), true)
-      val gbPropertyRuleIds = discountDao.getRuleIds(ProductAttributeConverter.fromJson(json), true)
+      val gbRegionRuleIds = discountDao.getRuleIds(region, true)
+      val gbCategoryRuleIds = discountDao.getRuleIds(category,  true)
+      val gbPropertyRuleIds = discountDao.getRuleIds(properties, true)
       ruleIds = gbRegionRuleIds.union(gbCategoryRuleIds).union(gbPropertyRuleIds)
     }
 
