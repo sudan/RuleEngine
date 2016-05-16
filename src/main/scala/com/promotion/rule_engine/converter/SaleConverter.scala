@@ -13,7 +13,6 @@ object SaleConverter {
 
   def toJson(sale: Sale): JsValue = {
 
-    val format = DateTimeFormat.forPattern(Constants.DISPLAY_FORMAT)
     implicit val saleWriter = new Writes[Sale] {
       def writes(sale: Sale) = Json.obj(
         Constants.SALE_CAMPAIGN_IDS -> Json.toJsFieldJsValueWrapper(sale.campaignIds)

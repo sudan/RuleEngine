@@ -75,7 +75,6 @@ object Constants {
   val SALE_ID = "_id"
   val SALE_CAMPAIGN_IDS = "campaign_ids"
 
-  val DISPLAY_FORMAT = "YYYY-MM-dd"
   val SENTINEL_ID = "-1"
   val SENTINEL_BOOST = -1
   val SENTINEL_TIMESTAMP = -1
@@ -86,4 +85,6 @@ object Constants {
   val GLOBAL = "gb"
 
   val RULE_EXPIRY = "rule_expiry"
+
+  val DATE_PATTERN = "yyyy-MM-dd HH:mm:ss"
 }

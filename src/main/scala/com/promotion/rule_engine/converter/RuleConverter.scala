@@ -13,7 +13,7 @@ object RuleConverter {
 
   def toJson(rule: Rule): JsValue = {
 
-    val format = DateTimeFormat.forPattern(Constants.DISPLAY_FORMAT)
+    val format = DateTimeFormat.forPattern(Constants.DATE_PATTERN)
     implicit val ruleWriter = new Writes[Rule] {
       def writes(rule: Rule) = Json.obj(
         Constants.ID -> rule.id,

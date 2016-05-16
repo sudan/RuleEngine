@@ -14,7 +14,7 @@ object CampaignConverter {
 
   def toJson(campaign: Campaign): JsValue = {
 
-    val format = DateTimeFormat.forPattern(Constants.DISPLAY_FORMAT)
+    val format = DateTimeFormat.forPattern(Constants.DATE_PATTERN)
     implicit val campaignWriter = new Writes[Campaign] {
       def writes(campaign: Campaign) = Json.obj(
         Constants.ID -> campaign.id,
@@ -36,8 +36,9 @@ object CampaignConverter {
     }
 
     val ruleIds = (json \ Constants.CAMPAIGN_RULE_IDS).as[Array[String]]
-    val startDate = new DateTime((json \ Constants.CAMPAIGN_START_DATE).as[String]).getMillis
-    val endDate = new DateTime((json \ Constants.CAMPAIGN_END_DATE).as[String]).getMillis
+    val format = DateTimeFormat.forPattern(Constants.DATE_PATTERN)
+    val startDate = format.parseDateTime((json \ Constants.CAMPAIGN_START_DATE).as[String]).getMillis
+    val endDate = format.parseDateTime((json \ Constants.CAMPAIGN_END_DATE).as[String]).getMillis
     val ruleRelationships = RuleRelationshipConverter.fromJson(json \ Constants.RULE_RELATIONSHIP)
     Campaign(id, ruleIds, startDate, endDate, ruleRelationships)
   }
