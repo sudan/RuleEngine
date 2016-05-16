@@ -29,4 +29,11 @@ trait DiscountDao {
    * @return
    */
   def getRuleIds(properties: Map[String, String], isGlobal: Boolean): Set[String]
+
+  /**
+   * Filter active rule Ids
+   * @param ruleIds
+   * @return
+   */
+  def filterActiveRuleIds(ruleIds: Set[String]): Set[String]
 }

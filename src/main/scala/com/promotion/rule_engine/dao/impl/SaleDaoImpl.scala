@@ -7,7 +7,7 @@ import com.promotion.rule_engine.builder.SaleBuilder
 import com.promotion.rule_engine.dao.api.SaleDao
 import com.promotion.rule_engine.generator.IdGenerator
 import com.promotion.rule_engine.mapper.SaleMapper
-import com.promotion.rule_engine.model.{Rule, RuleRelationship, Sale}
+import com.promotion.rule_engine.model.{RuleExpiry, Rule, RuleRelationship, Sale}
 
 /**
  * Created by sudan on 09/04/16.
@@ -52,7 +52,7 @@ class SaleDaoImpl extends SaleDao {
       MongoDBObject(Constants.SOFT_DELETED -> true)))
   }
 
-  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship]): Unit = {
+  def applyRules(rules: Array[Rule], ruleRelationships: Array[RuleRelationship], ruleExpiries: Array[RuleExpiry]): Unit = {
 
     redisClient.flushall
     redisClient.pipeline { client =>
@@ -74,6 +74,11 @@ class SaleDaoImpl extends SaleDao {
         var prefix = ""
         if (rule.isGlobal) {
           prefix = Constants.GLOBAL + Constants.SEPARATOR
+        }
+
+        for (ruleExpiry <- ruleExpiries) {
+          client.hset(Constants.RULE_EXPIRY + Constants.SEPARATOR + ruleExpiry.ruleId, Constants.CAMPAIGN_START_DATE, ruleExpiry.startDate)
+          client.hset(Constants.RULE_EXPIRY + Constants.SEPARATOR + ruleExpiry.ruleId, Constants.CAMPAIGN_END_DATE, ruleExpiry.endDate)
         }
 
         if (!productIds.isEmpty) {

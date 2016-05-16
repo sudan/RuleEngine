@@ -93,4 +93,18 @@ class DiscountDaoImpl extends DiscountDao {
     }
     rules
   }
+
+  def filterActiveRuleIds(ruleIds: Set[String]): Set[String] = {
+    val currentTime = System.currentTimeMillis
+    val activeRules = Set[String]()
+    for (ruleId <- ruleIds) {
+      val ruleExpiryMap = redisClient.hgetall(Constants.RULE_EXPIRY + Constants.SEPARATOR + ruleId).get
+      val startDate = ruleExpiryMap.get(Constants.CAMPAIGN_START_DATE).get.toLong
+      val endDate =  ruleExpiryMap.get(Constants.CAMPAIGN_END_DATE).get.toLong
+      if (currentTime > startDate && currentTime < endDate) {
+        activeRules += ruleId
+      }
+    }
+    activeRules
+  }
 }
